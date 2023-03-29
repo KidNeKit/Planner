@@ -1,34 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:planner/resources/themes.dart';
+
+import 'resources/themes.dart';
+import 'router/app_router.dart';
+import 'view/home_screen/home_screen.dart';
 
 void main() {
-  runApp(const PlannerApp());
+  runApp(PlannerApp());
 }
 
 class PlannerApp extends StatelessWidget {
-  const PlannerApp({super.key});
+  final AppRouter _appRouter = AppRouter();
+  PlannerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const MyApp(),
       theme: baseTheme,
-    );
-  }
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          'Home',
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
-      ),
+      onGenerateRoute: _appRouter.onGenerateRoute,
+      initialRoute: HomeScreen.routeName,
     );
   }
 }
