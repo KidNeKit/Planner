@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../cubits/navigation_cubit.dart';
 import '../../../resources/colors.dart';
+import '../navigation_screen.dart';
 
 class BottomBar extends StatelessWidget {
   const BottomBar({super.key});
@@ -14,9 +17,13 @@ class BottomBar extends StatelessWidget {
       color: primaryColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: const [
-          Icon(Icons.home, color: Colors.white),
-        ],
+        children: List.generate(
+          NavigationScreen.screens.length,
+          (index) => GestureDetector(
+              onTap: () =>
+                  context.read<NavigationCubit>().changeScreenIndex(index),
+              child: const Icon(Icons.home, color: Colors.white)),
+        ),
       ),
     );
   }
