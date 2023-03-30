@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../resources/colors.dart';
 import 'home_cards.dart';
 import 'today_achievements.dart';
 
@@ -13,24 +14,20 @@ class HomeBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SafeArea(
-            child: Text('Hello, Username',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(color: Colors.white)),
-          ),
+          const SizedBox(height: 30.0),
+          Text('Hello, Username',
+              style: Theme.of(context).textTheme.titleMedium),
           Text(
             'Thursday, 30 Mar 2023',
             style: Theme.of(context)
                 .textTheme
-                .labelSmall!
-                .copyWith(color: Colors.white),
+                .labelLarge!
+                .copyWith(color: neonGreen),
           ),
-          const SizedBox(height: 50.0),
+          const SizedBox(height: 30.0),
           const TodayAchievements(),
           const SizedBox(height: 50.0),
-          const HomeCards(),
+          //const HomeCards(),
         ],
       ),
     );

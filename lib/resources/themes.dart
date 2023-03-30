@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 ThemeData baseTheme = ThemeData(
-  primaryColor: darkGreenColor,
+  primaryColor: primaryColor,
   textTheme: textTheme,
   elevatedButtonTheme: buttonThemeData,
 );
@@ -14,6 +14,8 @@ TextTheme textTheme = TextTheme(
   bodyLarge: bodyLarge,
   bodyMedium: bodyMedium,
   bodySmall: bodySmall,
+  titleMedium: titleMedium,
+  titleSmall: titleSmall,
 );
 
 ElevatedButtonThemeData buttonThemeData = ElevatedButtonThemeData(
@@ -28,9 +30,10 @@ ElevatedButtonThemeData buttonThemeData = ElevatedButtonThemeData(
 );
 
 TextStyle bodyLarge = TextStyle(
-  color: darkColor,
-  fontSize: 40,
-  fontWeight: FontWeight.bold,
+  color: neonGreen,
+  fontSize: 48,
+  fontFamily: 'Kanit',
+  fontWeight: FontWeight.w700,
 );
 
 TextStyle bodyMedium = TextStyle(
@@ -45,18 +48,44 @@ TextStyle bodySmall = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-TextStyle labelLarge = TextStyle(
-  color: darkColor,
-  fontSize: 24,
-  fontWeight: FontWeight.bold,
+// TextStyle titleLarge = const TextStyle(
+//   color: Colors.white,
+//   fontSize: 16,
+//   fontFamily: 'Kanit',
+//   fontWeight: FontWeight.w400,
+// );
+
+TextStyle titleMedium = const TextStyle(
+  color: Colors.white,
+  fontSize: 22,
+  fontFamily: 'Kanit',
+  fontWeight: FontWeight.w500,
 );
 
-TextStyle labelMedium = TextStyle(
-  color: darkColor,
+TextStyle titleSmall = const TextStyle(
+  color: Colors.white,
   fontSize: 20,
+  fontFamily: 'Kanit',
+  fontWeight: FontWeight.w500,
 );
 
-TextStyle labelSmall = TextStyle(
-  color: darkColor,
+TextStyle labelLarge = const TextStyle(
+  color: Colors.white,
   fontSize: 16,
+  fontFamily: 'Kanit',
+  fontWeight: FontWeight.w400,
+);
+
+TextStyle labelMedium = const TextStyle(
+  color: Colors.white,
+  fontSize: 14,
+  fontFamily: 'Kanit',
+  fontWeight: FontWeight.w400,
+);
+
+TextStyle labelSmall = const TextStyle(
+  color: Colors.white,
+  fontSize: 12,
+  fontFamily: 'Kanit',
+  fontWeight: FontWeight.w400,
 );

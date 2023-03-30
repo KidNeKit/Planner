@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../resources/colors.dart';
-
 class HomeBackground extends StatelessWidget {
   const HomeBackground({super.key});
 
@@ -9,20 +7,12 @@ class HomeBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      height: 0.5 * size.height,
+      height: 0.47 * size.height,
       width: size.width,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            greenColor,
-            darkColor,
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
+        color: Theme.of(context).primaryColor,
         borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(30.0),
-          bottomRight: Radius.circular(30.0),
+          bottomLeft: Radius.circular(35.0),
         ),
       ),
     );

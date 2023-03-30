@@ -12,16 +12,17 @@ class TodayAchievements extends StatelessWidget {
         double width = (constraints.maxWidth - 32) / 3;
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AchievementContainer(width: width),
             SizedBox(
-              height: 2 / 3 * width,
-              child: const VerticalDivider(),
+              height: 1 / 2 * width,
+              child: VerticalDivider(color: neonGreen.withOpacity(0.5)),
             ),
             AchievementContainer(width: width),
             SizedBox(
-              height: 2 / 3 * width,
-              child: const VerticalDivider(),
+              height: 1 / 2 * width,
+              child: VerticalDivider(color: neonGreen.withOpacity(0.5)),
             ),
             AchievementContainer(width: width),
           ],
@@ -38,9 +39,16 @@ class AchievementContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: width,
       width: width,
-      color: greenColor,
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('99', style: Theme.of(context).textTheme.bodyLarge),
+          Text('Planned Tasks', style: Theme.of(context).textTheme.labelMedium),
+        ],
+      ),
     );
   }
 }
