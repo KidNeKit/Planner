@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'resources/themes.dart';
 import 'router/app_router.dart';
-import 'view/home_screen/home_screen.dart';
+import 'view/navigation_screen/navigation_screen.dart';
 
 void main() {
   runApp(PlannerApp());
@@ -17,7 +17,7 @@ class PlannerApp extends StatelessWidget {
     return MaterialApp(
       theme: baseTheme,
       onGenerateRoute: _appRouter.onGenerateRoute,
-      initialRoute: HomeScreen.routeName,
+      initialRoute: NavigationScreen.routeName,
     );
   }
 }
