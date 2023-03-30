@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'colors.dart';
 
 ThemeData baseTheme = ThemeData(
-  primaryColor: greenColor,
+  primaryColor: darkGreenColor,
   textTheme: textTheme,
   elevatedButtonTheme: buttonThemeData,
 );
