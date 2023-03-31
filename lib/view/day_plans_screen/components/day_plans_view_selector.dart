@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../blocs/day_plans/day_plans_bloc.dart';
 import '../../global_components/custom_text_sizes.dart';
 
 class DayPlansViewSelector extends StatelessWidget {
@@ -30,20 +32,13 @@ class DayPlansViewSelector extends StatelessWidget {
                   ),
                 ),
                 Row(
-                  children: [
-                    SizedBox(
-                      width: constraints.maxWidth / 2,
-                      child: const Center(
-                        child: CustomLabelLargeText(
-                            text: 'Table view', color: Colors.black),
-                      ),
-                    ),
-                    SizedBox(
-                      width: constraints.maxWidth / 2,
-                      child: const Center(
-                        child: CustomLabelLargeText(
-                            text: 'ListView', color: Colors.black),
-                      ),
+                  children: const [
+                    SelectorOption(
+                        optionText: 'Table View',
+                        plansView: DayPlansView.table),
+                    SelectorOption(
+                      optionText: 'List View',
+                      plansView: DayPlansView.list,
                     ),
                   ],
                 ),
@@ -51,6 +46,27 @@ class DayPlansViewSelector extends StatelessWidget {
             ),
           );
         }),
+      ),
+    );
+  }
+}
+
+class SelectorOption extends StatelessWidget {
+  final String optionText;
+  final DayPlansView plansView;
+  const SelectorOption(
+      {required this.optionText, required this.plansView, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      child: GestureDetector(
+        onTap: () => context
+            .read<DayPlansBloc>()
+            .add(PlansViewSelected(plansView: plansView)),
+        child: Center(
+          child: CustomLabelLargeText(text: optionText, color: Colors.black),
+        ),
       ),
     );
   }

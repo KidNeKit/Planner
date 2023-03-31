@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'blocs/day_plans/day_plans_bloc.dart';
 import 'resources/themes.dart';
 import 'router/app_router.dart';
 import 'view/navigation_screen/navigation_screen.dart';
@@ -14,10 +16,17 @@ class PlannerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: baseTheme,
-      onGenerateRoute: _appRouter.onGenerateRoute,
-      initialRoute: NavigationScreen.routeName,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => DayPlansBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        theme: baseTheme,
+        onGenerateRoute: _appRouter.onGenerateRoute,
+        initialRoute: NavigationScreen.routeName,
+      ),
     );
   }
 }
