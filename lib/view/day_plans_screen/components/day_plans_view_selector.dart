@@ -9,7 +9,7 @@ class DayPlansViewSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 30,
-      margin: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+      margin: const EdgeInsets.all(15.0).copyWith(bottom: 0),
       decoration: BoxDecoration(
         color: Colors.grey,
         borderRadius: BorderRadius.circular(7.0),

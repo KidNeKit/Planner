@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'components/day_plans_container.dart';
 import 'components/day_plans_header.dart';
 import 'components/day_plans_view_selector.dart';
 
@@ -12,6 +13,7 @@ class DayPlansScreen extends StatelessWidget {
       children: const [
         DayPlansHeader(),
         DayPlansViewSelector(),
+        DayPlansContainer(),
       ],
     );
   }
