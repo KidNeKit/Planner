@@ -8,17 +8,23 @@ enum DayPlansView {
 class DayPlansState extends Equatable {
   final DayPlansView plansView;
   final List<Plan> plans;
-  const DayPlansState({required this.plansView, required this.plans});
+  final OperationStatus status;
+  const DayPlansState(
+      {required this.plansView, required this.plans, required this.status});
 
   DayPlansState.initial()
       : plansView = DayPlansView.table,
-        plans = [];
+        plans = [],
+        status = OperationStatus.initial;
 
-  DayPlansState copyWith({DayPlansView? plansView, List<Plan>? plans}) {
+  DayPlansState copyWith(
+      {DayPlansView? plansView, List<Plan>? plans, OperationStatus? status}) {
     return DayPlansState(
-        plansView: plansView ?? this.plansView, plans: plans ?? this.plans);
+        plansView: plansView ?? this.plansView,
+        plans: plans ?? this.plans,
+        status: status ?? this.status);
   }
 
   @override
-  List<Object> get props => [plansView, plans];
+  List<Object> get props => [plansView, plans, status];
 }

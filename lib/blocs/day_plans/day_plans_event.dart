@@ -16,4 +16,6 @@ class PlansViewSelected extends DayPlansEvent {
   List<Object> get props => [plansView];
 }
 
-class PlansUpdateRequested extends DayPlansEvent {}
+class PlansUpdateRequested extends DayPlansEvent {
+  //final Date date;
+}

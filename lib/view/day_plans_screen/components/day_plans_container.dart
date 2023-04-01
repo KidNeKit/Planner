@@ -5,8 +5,19 @@ import '../../../blocs/day_plans/day_plans_bloc.dart';
 import 'day_plans_view_list.dart';
 import 'day_plans_view_table.dart';
 
-class DayPlansContainer extends StatelessWidget {
+class DayPlansContainer extends StatefulWidget {
   const DayPlansContainer({super.key});
+
+  @override
+  State<DayPlansContainer> createState() => _DayPlansContainerState();
+}
+
+class _DayPlansContainerState extends State<DayPlansContainer> {
+  @override
+  void initState() {
+    context.read<DayPlansBloc>().add(PlansUpdateRequested());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
