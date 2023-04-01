@@ -24,12 +24,23 @@ class DayPlansViewSelector extends StatelessWidget {
             width: constraints.maxWidth,
             child: Stack(
               children: [
-                Container(
-                  width: constraints.maxWidth / 2,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
+                BlocBuilder<DayPlansBloc, DayPlansState>(
+                  builder: (context, state) {
+                    return AnimatedContainer(
+                      padding: EdgeInsets.only(
+                          left: state.plansView == DayPlansView.table
+                              ? 0
+                              : constraints.maxWidth / 2),
+                      duration: const Duration(milliseconds: 100),
+                      child: Container(
+                        width: constraints.maxWidth / 2,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 Row(
                   children: const [
