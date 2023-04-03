@@ -13,7 +13,7 @@ class DayPlansViewSelector extends StatelessWidget {
       height: 30,
       margin: const EdgeInsets.all(15.0).copyWith(bottom: 0),
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: Colors.grey.withOpacity(0.5),
         borderRadius: BorderRadius.circular(7.0),
       ),
       child: Padding(

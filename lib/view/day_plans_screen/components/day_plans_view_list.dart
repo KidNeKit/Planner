@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../../blocs/day_plans/day_plans_bloc.dart';
 import '../../../models/enum/operation_status.dart';
@@ -60,9 +59,8 @@ class ListViewItem extends StatelessWidget {
               child: Container(
                 height: cardHeight,
                 width: 0.99 * cardWidth,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0)
-                        .copyWith(top: 15.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20.0),
@@ -81,6 +79,24 @@ class ListViewItem extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.amber,
                 borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 10,
+            right: 15,
+            child: CircularPercentIndicator(
+              radius: 1 / 6.5 * cardHeight,
+              percent: 0.75,
+              progressColor: const Color(0xFF77E6B6),
+              backgroundColor: const Color(0xFFD7ECF1),
+              circularStrokeCap: CircularStrokeCap.round,
+              center: Text(
+                '75%',
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall!
+                    .copyWith(color: Colors.black, fontWeight: FontWeight.w500),
               ),
             ),
           ),
@@ -111,29 +127,24 @@ class CardBody extends StatelessWidget {
                   .copyWith(color: Colors.black),
             ),
             const Spacer(),
-            CircularPercentIndicator(
-              radius: 1 / 6.5 * cardHeight,
-              percent: 0.75,
-              progressColor: const Color(0xFF77E6B6),
-              backgroundColor: const Color(0xFFD7ECF1),
-              circularStrokeCap: CircularStrokeCap.round,
-              center: Text(
-                '75%',
+          ],
+        ),
+        const SizedBox(height: 20.0),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Event label',
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.fade,
                 style: Theme.of(context)
                     .textTheme
-                    .labelSmall!
-                    .copyWith(color: Colors.black, fontWeight: FontWeight.w500),
+                    .titleSmall!
+                    .copyWith(color: Colors.black),
               ),
             ),
           ],
-        ),
-        const SizedBox(height: 7.0),
-        Text(
-          'Event label',
-          style: Theme.of(context)
-              .textTheme
-              .titleSmall!
-              .copyWith(color: Colors.black),
         ),
         const Spacer(),
         const Divider(),
