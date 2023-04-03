@@ -25,9 +25,7 @@ class _DayPlansContainerState extends State<DayPlansContainer> {
       child: Container(
         width: double.infinity,
         margin: const EdgeInsets.all(15.0),
-        decoration: const BoxDecoration(
-          color: Colors.grey,
-        ),
+        color: const Color(0xFFF8F8FD),
         child: BlocBuilder<DayPlansBloc, DayPlansState>(
           builder: (context, state) => state.plansView == DayPlansView.table
               ? const DayPlansViewTable()

@@ -20,6 +20,6 @@ class DayPlansBloc extends Bloc<DayPlansEvent, DayPlansState> {
 
   void _onPlansUpdateRequested(
       PlansUpdateRequested event, Emitter<DayPlansState> emit) async {
-    emit(state.copyWith(status: OperationStatus.loading));
+    emit(state.copyWith(status: OperationStatus.successful));
   }
 }

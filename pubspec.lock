@@ -270,6 +270,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.2"
+  percent_indicator:
+    dependency: "direct main"
+    description:
+      name: percent_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.3"
   pool:
     dependency: transitive
     description:
@@ -445,4 +452,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.18.5 <3.0.0"
-  flutter: ">=1.16.0"
+  flutter: ">=2.12.0"
