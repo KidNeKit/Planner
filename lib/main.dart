@@ -1,11 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'blocs/day_plans/day_plans_bloc.dart';
 import 'resources/themes.dart';
 import 'router/app_router.dart';
-import 'view/navigation_screen/navigation_screen.dart';
+import 'view/login_screen/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,7 @@ class PlannerApp extends StatelessWidget {
       child: MaterialApp(
         theme: baseTheme,
         onGenerateRoute: _appRouter.onGenerateRoute,
-        initialRoute: NavigationScreen.routeName,
+        initialRoute: LoginScreen.routeName,
       ),
     );
   }
