@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/day_plans/day_plans_bloc.dart';
 import '../../../models/enum/operation_status.dart';
 
-class DayPlansViewTable extends StatelessWidget {
+class DayPlansViewTable extends StatefulWidget {
+  static const int hoursCount = 24;
+  static const double numberWidthCoef = 0.15;
+  static const double freeWidthCoef = 0.85;
+
   const DayPlansViewTable({super.key});
+
+  @override
+  State<DayPlansViewTable> createState() => _DayPlansViewTableState();
+}
+
+class _DayPlansViewTableState extends State<DayPlansViewTable> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +49,12 @@ class DayPlansViewTable extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
                 child: SingleChildScrollView(
+                  controller: _scrollController,
                   child: Stack(
                     children: [
                       Column(
                         children: List.generate(
-                            24,
+                            DayPlansViewTable.hoursCount,
                             (index) => HourContainer(
                                   index: index,
                                   hourHeight: hourHeight,
@@ -40,9 +62,9 @@ class DayPlansViewTable extends StatelessWidget {
                                 )),
                       ),
                       Positioned(
-                        left: 0.15 * hourWidth,
+                        left: DayPlansViewTable.numberWidthCoef * hourWidth,
                         child: Container(
-                          height: 24 * hourHeight,
+                          height: DayPlansViewTable.hoursCount * hourHeight,
                           width: 1,
                           color: Colors.grey.withOpacity(0.5),
                         ),
@@ -58,6 +80,15 @@ class DayPlansViewTable extends StatelessWidget {
                           minutes: 5,
                           containerHeight: hourHeight,
                           containerWidth: hourWidth),
+                      //todo set top offset
+                      Positioned(
+                        top: 17 * hourHeight,
+                        child: Container(
+                          height: 2,
+                          width: hourWidth,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -85,17 +116,31 @@ class HourContainer extends StatelessWidget {
     return LayoutBuilder(
       builder: (ctx, constraints) {
         double containerWidth = constraints.maxWidth;
-        return SizedBox(
+        return Container(
           height: hourHeight,
-          width: 0.15 * containerWidth,
-          child: Center(
-            child: Text(
-              '$index',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall!
-                  .copyWith(color: Colors.black.withOpacity(0.5)),
+          width: containerWidth,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                  width: index != DayPlansViewTable.hoursCount - 1 ? 1 : 0,
+                  color: Colors.grey.withOpacity(0.5)),
             ),
+          ),
+          child: Row(
+            children: [
+              SizedBox(
+                width: DayPlansViewTable.numberWidthCoef * hourWidth,
+                child: Center(
+                  child: Text(
+                    '$index',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color: Colors.black.withOpacity(0.5)),
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
@@ -119,11 +164,11 @@ class EventContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       top: hours * containerHeight + minutes / 60 * containerHeight,
-      left: 0.15 * containerWidth,
+      left: DayPlansViewTable.numberWidthCoef * containerWidth,
       child: Container(
         height: containerHeight,
-        width: 0.85 * containerWidth,
-        color: Colors.amber.withOpacity(0.5),
+        width: DayPlansViewTable.freeWidthCoef * containerWidth,
+        color: Colors.amber,
         child: Center(
           child: Text(
             'Event label',
