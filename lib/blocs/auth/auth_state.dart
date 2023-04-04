@@ -1,7 +1,7 @@
 part of 'auth_bloc.dart';
 
 class AuthState extends Equatable {
-  final User? user;
+  final CustomUser? user;
 
   const AuthState.authenticated(this.user);
 

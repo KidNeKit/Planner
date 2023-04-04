@@ -42,6 +42,11 @@ class AuthRepository {
     }
   }
 
+  Future<String> getUserUsernameById(String id) async {
+    var doc = await _firestore.collection(userCollectionPath).doc(id).get();
+    return doc.data()!['username'];
+  }
+
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }

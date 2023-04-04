@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../blocs/auth/auth_bloc.dart';
 import '../../cubits/navigation/navigation_cubit.dart';
 import '../day_plans_screen/day_plans_screen.dart';
 import '../home_screen/home_screen.dart';
@@ -18,7 +17,6 @@ class NavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<AuthBloc>().add(LogoutRequested());
     return BlocBuilder<NavigationCubit, NavigationState>(
       builder: (context, state) {
         return Scaffold(

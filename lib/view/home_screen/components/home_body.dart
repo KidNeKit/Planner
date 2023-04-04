@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../blocs/auth/auth_bloc.dart';
 import '../../../resources/colors.dart';
-import 'home_cards.dart';
 import 'today_achievements.dart';
 
 class HomeBody extends StatelessWidget {
@@ -15,8 +16,12 @@ class HomeBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 30.0),
-          Text('Hello, Username',
-              style: Theme.of(context).textTheme.titleMedium),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              return Text('Hello, ${state.user!.username}',
+                  style: Theme.of(context).textTheme.titleMedium);
+            },
+          ),
           Text(
             'Thursday, 30 Mar 2023',
             style: Theme.of(context)

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:planner/models/custom_user.dart';
 
 import '../../repositories/auth_repository.dart';
 
@@ -26,11 +27,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
-  void onUserChanged(UserChanged event, Emitter<AuthState> emit) {
+  void onUserChanged(UserChanged event, Emitter<AuthState> emit) async {
     if (event.user == null) {
       emit(const AuthState.unauthenticated());
     } else {
-      emit(AuthState.authenticated(event.user));
+      User user = event.user!;
+      String username = await _authRepository.getUserUsernameById(user.uid);
+      CustomUser myUser =
+          CustomUser(id: user.uid, email: user.email!, username: username);
+      emit(AuthState.authenticated(myUser));
     }
   }
 
