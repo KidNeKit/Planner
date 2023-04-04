@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,7 +21,6 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   void signInWithEmailAndPassword() {
-    log('Current login state: $state');
     _authRepository.signInWithEmailAndPassword(state.email, state.password);
   }
 }

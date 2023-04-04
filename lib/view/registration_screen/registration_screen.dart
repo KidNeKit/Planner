@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../blocs/auth/auth_bloc.dart';
 import '../../cubits/registration/registration_cubit.dart';
+import '../../models/enum/operation_status.dart';
 import '../../repositories/auth_repository.dart';
 import '../login_screen/login_screen.dart';
+import '../navigation_screen/navigation_screen.dart';
 
 class RegistrationScreen extends StatelessWidget {
   static const String routeName = '/registration';
@@ -33,10 +36,29 @@ class RegistrationScreen extends StatelessWidget {
               );
             },
           ),
-          ElevatedButton(
-            onPressed: () =>
-                context.read<RegistrationCubit>().signUpWithEmailAndPassword(),
-            child: const Text('Sign Up'),
+          BlocBuilder<RegistrationCubit, RegistrationState>(
+            buildWhen: (previous, current) =>
+                previous.username != current.username,
+            builder: (context, state) {
+              return TextField(
+                onChanged: (value) =>
+                    context.read<RegistrationCubit>().changeUsername(value),
+              );
+            },
+          ),
+          BlocBuilder<RegistrationCubit, RegistrationState>(
+            buildWhen: (previous, current) => previous.status != current.status,
+            builder: (context, state) {
+              if (state.status == OperationStatus.loading) {
+                return const CircularProgressIndicator();
+              }
+              return ElevatedButton(
+                onPressed: () => context
+                    .read<RegistrationCubit>()
+                    .signUpWithEmailAndPassword(),
+                child: const Text('Sign Up'),
+              );
+            },
           ),
           TextButton(
             onPressed: () =>
@@ -53,7 +75,15 @@ class RegistrationScreen extends StatelessWidget {
       builder: (context) => BlocProvider(
         create: (context) =>
             RegistrationCubit(authRepository: context.read<AuthRepository>()),
-        child: const RegistrationScreen(),
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state.user != null) {
+              Navigator.of(context)
+                  .pushReplacementNamed(NavigationScreen.routeName);
+            }
+          },
+          child: const RegistrationScreen(),
+        ),
       ),
     );
   }

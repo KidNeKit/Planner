@@ -22,9 +22,20 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     emit(state.copyWith(password: password));
   }
 
+  void changeUsername(String username) {
+    emit(state.copyWith(username: username));
+  }
+
   void signUpWithEmailAndPassword() async {
-    log('Current registration state: $state');
-    await _authRepository.signUpWithEmailAndPassword(
-        state.email, state.password);
+    emit(state.copyWith(status: OperationStatus.loading));
+    try {
+      await _authRepository.signUpWithEmailAndPassword(
+          state.email, state.password, state.username);
+    } catch (e) {
+      log('Error: $e');
+      emit(state.copyWith(status: OperationStatus.failed));
+      return;
+    }
+    emit(state.copyWith(status: OperationStatus.successful));
   }
 }

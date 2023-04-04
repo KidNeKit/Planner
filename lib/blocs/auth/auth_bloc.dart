@@ -24,7 +24,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       log('Receiving firebase user in listener: $firebaseUser');
       add(UserChanged(firebaseUser));
     });
-    log('created subscription');
   }
 
   void onUserChanged(UserChanged event, Emitter<AuthState> emit) {
@@ -35,7 +34,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void onLogoutRequested(LogoutRequested event, Emitter<AuthState> emit) {}
+  void onLogoutRequested(LogoutRequested event, Emitter<AuthState> emit) {
+    _authRepository.signOut();
+  }
 
   @override
   Future<void> close() {

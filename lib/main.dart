@@ -8,7 +8,7 @@ import 'blocs/day_plans/day_plans_bloc.dart';
 import 'repositories/auth_repository.dart';
 import 'resources/themes.dart';
 import 'router/app_router.dart';
-import 'view/login_screen/login_screen.dart';
+import 'view/splash_screen/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +43,7 @@ class PlannerApp extends StatelessWidget {
         child: MaterialApp(
           theme: baseTheme,
           onGenerateRoute: _appRouter.onGenerateRoute,
-          initialRoute: LoginScreen.routeName,
+          initialRoute: SplashScreen.routeName,
         ),
       ),
     );

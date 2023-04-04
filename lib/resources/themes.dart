@@ -42,8 +42,8 @@ TextStyle bodyMedium = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-TextStyle bodySmall = TextStyle(
-  color: darkColor,
+TextStyle bodySmall = const TextStyle(
+  color: Colors.white,
   fontSize: 30,
   fontWeight: FontWeight.bold,
 );

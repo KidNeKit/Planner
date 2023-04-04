@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../cubits/login/login_cubit.dart';
 import '../../repositories/auth_repository.dart';
+import '../navigation_screen/navigation_screen.dart';
 import '../registration_screen/registration_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -54,7 +55,15 @@ class LoginScreen extends StatelessWidget {
       builder: (context) => BlocProvider(
         create: (context) =>
             LoginCubit(authRepository: context.read<AuthRepository>()),
-        child: const LoginScreen(),
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state.user != null) {
+              Navigator.of(context)
+                  .pushReplacementNamed(NavigationScreen.routeName);
+            }
+          },
+          child: const LoginScreen(),
+        ),
       ),
     );
   }
