@@ -22,9 +22,9 @@ class _DayPlansViewTableState extends State<DayPlansViewTable> {
   @override
   void initState() {
     _scrollController = ScrollController();
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-    });
+    //SchedulerBinding.instance.addPostFrameCallback((_) {
+    //  _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    //});
     super.initState();
   }
 
