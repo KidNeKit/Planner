@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planner/view/registration_screen/registration_screen.dart';
 
+import '../../blocs/auth/auth_bloc.dart';
 import '../../cubits/login/login_cubit.dart';
+import '../../repositories/auth_repository.dart';
+import '../registration_screen/registration_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routeName = '/login';
@@ -50,7 +52,8 @@ class LoginScreen extends StatelessWidget {
   static MaterialPageRoute getRoute() {
     return MaterialPageRoute(
       builder: (context) => BlocProvider(
-        create: (context) => LoginCubit(),
+        create: (context) =>
+            LoginCubit(authRepository: context.read<AuthRepository>()),
         child: const LoginScreen(),
       ),
     );

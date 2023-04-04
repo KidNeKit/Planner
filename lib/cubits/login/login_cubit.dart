@@ -4,11 +4,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/enum/operation_status.dart';
+import '../../repositories/auth_repository.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit() : super(const LoginState.initial());
+  final AuthRepository _authRepository;
+  LoginCubit({required AuthRepository authRepository})
+      : _authRepository = authRepository,
+        super(const LoginState.initial());
 
   void changeEmail(String email) {
     emit(state.copyWith(email: email));
@@ -20,5 +24,6 @@ class LoginCubit extends Cubit<LoginState> {
 
   void signInWithEmailAndPassword() {
     log('Current login state: $state');
+    _authRepository.signInWithEmailAndPassword(state.email, state.password);
   }
 }
