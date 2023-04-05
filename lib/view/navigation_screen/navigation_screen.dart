@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:planner/view/event_creation_screen/event_creation_screen.dart';
 
 import '../../cubits/navigation/navigation_cubit.dart';
 import '../day_plans_screen/day_plans_screen.dart';
@@ -25,6 +26,9 @@ class NavigationScreen extends StatelessWidget {
             child: screens[state.index],
           ),
           bottomNavigationBar: const BottomBar(),
+          floatingActionButton: FloatingActionButton(
+              onPressed: () => Navigator.of(context)
+                  .pushNamed(EventCreationScreen.routeName)),
         );
       },
     );

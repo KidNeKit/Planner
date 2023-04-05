@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 Color primaryColor = const Color(0xFF004343);
 Color neonGreen = const Color(0xFF77E6B6);
+Color neonRed = const Color.fromARGB(255, 230, 119, 119);
 
 Color lightColor = const Color(0xFFcad2c5);
 Color greenColor = const Color(0xFF52796f);
