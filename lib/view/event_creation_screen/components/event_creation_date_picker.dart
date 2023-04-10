@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planner/view/global_components/custom_calendar.dart';
 
 import '../../../resources/colors.dart';
 import '../../global_components/custom_rounded_card.dart';
@@ -11,26 +12,32 @@ class EventCreationDatePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomRoundedCard(
-      child: Row(
+      child: Column(
         children: [
-          CustomTitleSmallText(
-            text: label,
-            color: Colors.black,
+          Row(
+            children: [
+              CustomTitleSmallText(
+                text: label,
+                color: Colors.black,
+              ),
+              const Spacer(),
+              CustomTitleSmallText(
+                text: 'Pick a date',
+                color: neonGreen,
+              ),
+              const SizedBox(width: 10.0),
+              const TimeContainer(),
+              const SizedBox(width: 3.0),
+              const CustomTitleSmallText(
+                text: ':',
+                color: Colors.black,
+              ),
+              const SizedBox(width: 3.0),
+              const TimeContainer(),
+            ],
           ),
-          const Spacer(),
-          CustomTitleSmallText(
-            text: 'Pick a date',
-            color: neonGreen,
-          ),
-          const SizedBox(width: 10.0),
-          const TimeContainer(),
-          const SizedBox(width: 3.0),
-          const CustomTitleSmallText(
-            text: ':',
-            color: Colors.black,
-          ),
-          const SizedBox(width: 3.0),
-          const TimeContainer(),
+          const SizedBox(height: 10.0),
+          const CustomCalendar(),
         ],
       ),
     );

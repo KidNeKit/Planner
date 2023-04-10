@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:planner/view/event_creation_screen/components/event_creation_date_picker.dart';
-import 'package:planner/view/global_components/custom_rounded_card.dart';
 
+import '../../global_components/custom_rounded_card.dart';
 import '../../global_components/custom_text_sizes.dart';
+import 'event_creation_date_picker.dart';
 
 class EventCreationBody extends StatelessWidget {
   const EventCreationBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Column(
-        children: const [
-          TitleInputCard(textLabel: 'Event Name'),
-          SizedBox(height: 5.0),
-          TitleInputCard(textLabel: 'Place'),
-          SizedBox(height: 5.0),
-          EventCreationDatePicker(label: 'Start'),
-          SizedBox(height: 5.0),
-          EventCreationDatePicker(label: 'End'),
-        ],
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              TitleInputCard(textLabel: 'Event Name'),
+              SizedBox(height: 5.0),
+              TitleInputCard(textLabel: 'Place'),
+              SizedBox(height: 5.0),
+              EventCreationDatePicker(label: 'Start'),
+              SizedBox(height: 5.0),
+              EventCreationDatePicker(label: 'End'),
+            ],
+          ),
+        ),
       ),
     );
   }
