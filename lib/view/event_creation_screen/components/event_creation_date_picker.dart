@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:planner/view/global_components/custom_calendar.dart';
 
 import '../../../resources/colors.dart';
+import '../../global_components/custom_calendar.dart';
 import '../../global_components/custom_rounded_card.dart';
 import '../../global_components/custom_text_sizes.dart';
 
-class EventCreationDatePicker extends StatelessWidget {
+class EventCreationDatePicker extends StatefulWidget {
   final String label;
   const EventCreationDatePicker({required this.label, super.key});
+
+  @override
+  State<EventCreationDatePicker> createState() =>
+      _EventCreationDatePickerState();
+}
+
+class _EventCreationDatePickerState extends State<EventCreationDatePicker> {
+  late bool _isExpanded;
+
+  @override
+  void initState() {
+    _isExpanded = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +31,20 @@ class EventCreationDatePicker extends StatelessWidget {
           Row(
             children: [
               CustomTitleSmallText(
-                text: label,
+                text: widget.label,
                 color: Colors.black,
               ),
               const Spacer(),
-              CustomTitleSmallText(
-                text: 'Pick a date',
-                color: neonGreen,
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                },
+                child: CustomTitleSmallText(
+                  text: 'Pick a date',
+                  color: neonGreen,
+                ),
               ),
               const SizedBox(width: 10.0),
               const TimeContainer(),
@@ -36,8 +57,8 @@ class EventCreationDatePicker extends StatelessWidget {
               const TimeContainer(),
             ],
           ),
-          const SizedBox(height: 10.0),
-          const CustomCalendar(),
+          if (_isExpanded) const SizedBox(height: 10.0),
+          if (_isExpanded) const CustomCalendar(),
         ],
       ),
     );

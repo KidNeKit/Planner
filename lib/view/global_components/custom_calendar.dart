@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../../models/enum/months_info.dart';
@@ -144,13 +146,16 @@ class _CustomCalendarState extends State<CustomCalendar> {
   }
 
   Widget _buildSingleDay(int dayNum, [bool isAnotherMonth = false]) {
-    return Center(
-      child: Text(
-        dayNum.toString(),
-        style: Theme.of(context)
-            .textTheme
-            .labelLarge!
-            .copyWith(color: isAnotherMonth ? Colors.grey : Colors.black),
+    return GestureDetector(
+      onTap: () => log('$dayNum-$selectedMonth-$selectedYear'),
+      child: Center(
+        child: Text(
+          dayNum.toString(),
+          style: Theme.of(context)
+              .textTheme
+              .labelLarge!
+              .copyWith(color: isAnotherMonth ? Colors.grey : Colors.black),
+        ),
       ),
     );
   }
