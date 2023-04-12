@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../cubits/event_creation/event_creation_cubit.dart';
 import 'components/event_creation_body.dart';
 import 'components/event_creation_header.dart';
 
@@ -22,7 +24,10 @@ class EventCreationScreen extends StatelessWidget {
 
   static MaterialPageRoute getRoute() {
     return MaterialPageRoute(
-      builder: (context) => const EventCreationScreen(),
+      builder: (context) => BlocProvider(
+        create: (context) => EventCreationCubit(),
+        child: const EventCreationScreen(),
+      ),
     );
   }
 }

@@ -6,7 +6,8 @@ import '../../models/enum/months_info.dart';
 import '../../resources/colors.dart';
 
 class CustomCalendar extends StatefulWidget {
-  const CustomCalendar({super.key});
+  final Function(int, int, int) onDateSelectedFunc;
+  const CustomCalendar({required this.onDateSelectedFunc, super.key});
 
   @override
   State<CustomCalendar> createState() => _CustomCalendarState();
@@ -147,7 +148,8 @@ class _CustomCalendarState extends State<CustomCalendar> {
 
   Widget _buildSingleDay(int dayNum, [bool isAnotherMonth = false]) {
     return GestureDetector(
-      onTap: () => log('$dayNum-$selectedMonth-$selectedYear'),
+      onTap: () =>
+          widget.onDateSelectedFunc(selectedYear, selectedMonth, dayNum),
       child: Center(
         child: Text(
           dayNum.toString(),

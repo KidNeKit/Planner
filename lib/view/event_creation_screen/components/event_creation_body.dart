@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../cubits/event_creation/event_creation_cubit.dart';
+import '../../../models/enum/date_options.dart';
 import '../../global_components/custom_rounded_card.dart';
 import '../../global_components/custom_text_sizes.dart';
 import 'event_creation_date_picker.dart';
@@ -16,14 +19,29 @@ class EventCreationBody extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
-              TitleInputCard(textLabel: 'Event Name'),
-              SizedBox(height: 5.0),
-              TitleInputCard(textLabel: 'Place'),
-              SizedBox(height: 5.0),
-              EventCreationDatePicker(label: 'Start'),
-              SizedBox(height: 5.0),
-              EventCreationDatePicker(label: 'End'),
+            children: [
+              TitleInputCard(
+                textLabel: 'Event Name',
+                onChangeFunc: (value) =>
+                    context.read<EventCreationCubit>().changeEventName(value),
+              ),
+              const SizedBox(height: 5.0),
+              TitleInputCard(
+                textLabel: 'Place',
+                onChangeFunc: (value) => context
+                    .read<EventCreationCubit>()
+                    .changeEventLocation(value),
+              ),
+              const SizedBox(height: 5.0),
+              const EventCreationDatePicker(
+                label: 'Start',
+                dateOption: DateOptions.start,
+              ),
+              const SizedBox(height: 5.0),
+              const EventCreationDatePicker(
+                label: 'End',
+                dateOption: DateOptions.end,
+              ),
             ],
           ),
         ),
@@ -34,7 +52,9 @@ class EventCreationBody extends StatelessWidget {
 
 class TitleInputCard extends StatelessWidget {
   final String textLabel;
-  const TitleInputCard({required this.textLabel, super.key});
+  final Function(String) onChangeFunc;
+  const TitleInputCard(
+      {required this.textLabel, required this.onChangeFunc, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +68,7 @@ class TitleInputCard extends StatelessWidget {
           ),
           const SizedBox(height: 5.0),
           TextField(
+            onChanged: onChangeFunc,
             style: Theme.of(context)
                 .textTheme
                 .titleSmall!

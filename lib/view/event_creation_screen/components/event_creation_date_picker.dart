@@ -1,5 +1,11 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../cubits/event_creation/event_creation_cubit.dart';
+import '../../../models/enum/months_info.dart';
+
+import '../../../models/enum/date_options.dart';
 import '../../../resources/colors.dart';
 import '../../global_components/custom_calendar.dart';
 import '../../global_components/custom_rounded_card.dart';
@@ -7,7 +13,9 @@ import '../../global_components/custom_text_sizes.dart';
 
 class EventCreationDatePicker extends StatefulWidget {
   final String label;
-  const EventCreationDatePicker({required this.label, super.key});
+  final DateOptions dateOption;
+  const EventCreationDatePicker(
+      {required this.label, required this.dateOption, super.key});
 
   @override
   State<EventCreationDatePicker> createState() =>
@@ -41,10 +49,9 @@ class _EventCreationDatePickerState extends State<EventCreationDatePicker> {
                     _isExpanded = !_isExpanded;
                   });
                 },
-                child: CustomTitleSmallText(
-                  text: 'Pick a date',
-                  color: neonGreen,
-                ),
+                child: widget.dateOption == DateOptions.start
+                    ? const StartDateTitleArea()
+                    : const EndDateTitleArea(),
               ),
               const SizedBox(width: 10.0),
               const TimeContainer(),
@@ -58,7 +65,17 @@ class _EventCreationDatePickerState extends State<EventCreationDatePicker> {
             ],
           ),
           if (_isExpanded) const SizedBox(height: 10.0),
-          if (_isExpanded) const CustomCalendar(),
+          if (_isExpanded)
+            CustomCalendar(
+              onDateSelectedFunc: (year, month, day) =>
+                  widget.dateOption == DateOptions.start
+                      ? context
+                          .read<EventCreationCubit>()
+                          .changeStartDate(year, month, day)
+                      : context
+                          .read<EventCreationCubit>()
+                          .changeEndDate(year, month, day),
+            ),
         ],
       ),
     );
@@ -80,6 +97,48 @@ class TimeContainer extends StatelessWidget {
         text: '00',
         color: Colors.black,
       ),
+    );
+  }
+}
+
+class StartDateTitleArea extends StatelessWidget {
+  const StartDateTitleArea({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EventCreationCubit, EventCreationState>(
+      buildWhen: (previous, current) => previous.startDate != current.startDate,
+      builder: (context, state) {
+        DateTime? date = state.startDate;
+        String text = date == null
+            ? 'Pick a date'
+            : '${MonthsInfo.getMonthByOrder(date.month).fullName} ${date.day}';
+        return CustomTitleSmallText(
+          text: text,
+          color: neonGreen,
+        );
+      },
+    );
+  }
+}
+
+class EndDateTitleArea extends StatelessWidget {
+  const EndDateTitleArea({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EventCreationCubit, EventCreationState>(
+      buildWhen: (previous, current) => previous.endDate != current.endDate,
+      builder: (context, state) {
+        DateTime? date = state.endDate;
+        String text = date == null
+            ? 'Pick a date'
+            : '${MonthsInfo.getMonthByOrder(date.month).fullName} ${date.day}';
+        return CustomTitleSmallText(
+          text: text,
+          color: neonGreen,
+        );
+      },
     );
   }
 }
