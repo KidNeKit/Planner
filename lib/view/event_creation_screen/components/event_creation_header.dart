@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../cubits/event_creation/event_creation_cubit.dart';
 import '../../../resources/colors.dart';
 import '../../global_components/custom_text_sizes.dart';
 
@@ -26,7 +28,8 @@ class EventCreationHeader extends StatelessWidget {
               ),
               const CustomTitleSmallText(text: 'Event Creation'),
               TextButton(
-                onPressed: () {},
+                onPressed: () =>
+                    context.read<EventCreationCubit>().createEvent(),
                 child: CustomLabelLargeText(
                   text: 'Save',
                   color: neonGreen,

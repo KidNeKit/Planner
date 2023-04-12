@@ -29,4 +29,24 @@ class EventCreationCubit extends Cubit<EventCreationState> {
     emit(state.copyWith(endDate: date));
     log(state.toString());
   }
+
+  void changeStartHours(int hours) {
+    emit(state.copyWith(startHours: hours));
+  }
+
+  void changeStartMinutes(int minutes) {
+    emit(state.copyWith(startMinutes: minutes));
+  }
+
+  void changeEndHours(int hours) {
+    emit(state.copyWith(endHours: hours));
+  }
+
+  void changeEndMinutes(int minutes) {
+    emit(state.copyWith(endMinutes: minutes));
+  }
+
+  void createEvent() {
+    log(state.toString());
+  }
 }

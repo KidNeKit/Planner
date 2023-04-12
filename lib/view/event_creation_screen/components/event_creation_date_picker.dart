@@ -54,14 +54,14 @@ class _EventCreationDatePickerState extends State<EventCreationDatePicker> {
                     : const EndDateTitleArea(),
               ),
               const SizedBox(width: 10.0),
-              const TimeContainer(),
+              HourContainer(dateOptions: widget.dateOption),
               const SizedBox(width: 3.0),
               const CustomTitleSmallText(
                 text: ':',
                 color: Colors.black,
               ),
               const SizedBox(width: 3.0),
-              const TimeContainer(),
+              MinuteContainer(dateOptions: widget.dateOption),
             ],
           ),
           if (_isExpanded) const SizedBox(height: 10.0),
@@ -82,20 +82,63 @@ class _EventCreationDatePickerState extends State<EventCreationDatePicker> {
   }
 }
 
-class TimeContainer extends StatelessWidget {
-  const TimeContainer({super.key});
+class HourContainer extends StatelessWidget {
+  final DateOptions dateOptions;
+  const HourContainer({required this.dateOptions, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 40,
+      width: 40,
       padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
       decoration: BoxDecoration(
         border: Border.all(color: neonGreen, width: 2.0),
         borderRadius: BorderRadius.circular(7.0),
       ),
-      child: const CustomTitleSmallText(
-        text: '00',
-        color: Colors.black,
+      child: PageView.builder(
+        onPageChanged: (value) => dateOptions == DateOptions.start
+            ? context.read<EventCreationCubit>().changeStartHours(value)
+            : context.read<EventCreationCubit>().changeEndHours(value),
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) => Center(
+          child: CustomTitleSmallText(
+            text: index < 10 ? '0$index' : index.toString(),
+            color: Colors.black,
+          ),
+        ),
+        itemCount: 24,
+      ),
+    );
+  }
+}
+
+class MinuteContainer extends StatelessWidget {
+  final DateOptions dateOptions;
+  const MinuteContainer({required this.dateOptions, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 40,
+      width: 40,
+      padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: neonGreen, width: 2.0),
+        borderRadius: BorderRadius.circular(7.0),
+      ),
+      child: PageView.builder(
+        onPageChanged: (value) => dateOptions == DateOptions.start
+            ? context.read<EventCreationCubit>().changeStartMinutes(value)
+            : context.read<EventCreationCubit>().changeEndMinutes(value),
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) => Center(
+          child: CustomTitleSmallText(
+            text: index < 10 ? '0$index' : index.toString(),
+            color: Colors.black,
+          ),
+        ),
+        itemCount: 60,
       ),
     );
   }
