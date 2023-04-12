@@ -76,7 +76,7 @@ class EventCreationCubit extends Cubit<EventCreationState> {
         startDate: finalStartDate,
         endDate: finalEndDate);
 
-    List<Event> events = [event]; //_splitEventByDay(event);
+    List<Event> events = _splitEventByDay(event);
     for (var element in events) {
       await _eventRepository.createEvent(element);
     }
@@ -89,33 +89,28 @@ class EventCreationCubit extends Cubit<EventCreationState> {
     var startDate = event.startDate;
     var endDate = event.endDate;
 
-    var midnight = DateTime(startDate.year, startDate.month, startDate.day);
-    var nextMidnight =
-        DateTime(midnight.year, midnight.month, midnight.day + 1);
-    var endMidnight = DateTime(endDate.year, endDate.month, endDate.day);
+    if (startDate.year == endDate.year &&
+        startDate.month == endDate.month &&
+        startDate.day == endDate.day) {
+      return [event];
+    }
 
-    events.add(Event(
-        eventName: event.eventName,
-        eventLocation: event.eventLocation,
-        startDate: startDate,
-        endDate: nextMidnight));
+    var newDate = startDate;
     do {
-      midnight = nextMidnight;
-      nextMidnight = DateTime(midnight.year, midnight.month, midnight.day + 1);
       events.add(Event(
           eventName: event.eventName,
           eventLocation: event.eventLocation,
-          startDate: midnight,
-          endDate: nextMidnight));
-    } while (nextMidnight.isBefore(endMidnight));
+          startDate: newDate,
+          endDate: DateTime(newDate.year, newDate.month, newDate.day + 1)));
+      newDate = DateTime(newDate.year, newDate.month, newDate.day + 1);
+    } while (
+        newDate.isBefore(DateTime(endDate.year, endDate.month, endDate.day)));
     events.add(Event(
         eventName: event.eventName,
         eventLocation: event.eventLocation,
-        startDate: endMidnight,
+        startDate: DateTime(endDate.year, endDate.month, endDate.day),
         endDate: endDate));
 
-    log(events.toString());
-
-    return [];
+    return events;
   }
 }
