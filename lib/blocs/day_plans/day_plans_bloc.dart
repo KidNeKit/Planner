@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/enum/operation_status.dart';
-import '../../models/plan.dart';
+import '../../models/event.dart';
 
 part 'day_plans_event.dart';
 part 'day_plans_state.dart';

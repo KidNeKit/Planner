@@ -7,7 +7,7 @@ enum DayPlansView {
 
 class DayPlansState extends Equatable {
   final DayPlansView plansView;
-  final List<Plan> plans;
+  final List<Event> plans;
   final OperationStatus status;
   const DayPlansState(
       {required this.plansView, required this.plans, required this.status});
@@ -18,7 +18,7 @@ class DayPlansState extends Equatable {
         status = OperationStatus.initial;
 
   DayPlansState copyWith(
-      {DayPlansView? plansView, List<Plan>? plans, OperationStatus? status}) {
+      {DayPlansView? plansView, List<Event>? plans, OperationStatus? status}) {
     return DayPlansState(
         plansView: plansView ?? this.plansView,
         plans: plans ?? this.plans,
