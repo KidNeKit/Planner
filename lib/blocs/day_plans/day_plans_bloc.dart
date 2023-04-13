@@ -3,12 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/enum/operation_status.dart';
 import '../../models/event.dart';
+import '../../repositories/event_repository.dart';
 
 part 'day_plans_event.dart';
 part 'day_plans_state.dart';
 
 class DayPlansBloc extends Bloc<DayPlansEvent, DayPlansState> {
-  DayPlansBloc() : super(DayPlansState.initial()) {
+  final EventRepository _eventRepository;
+
+  DayPlansBloc({required EventRepository eventRepository})
+      : _eventRepository = eventRepository,
+        super(DayPlansState.initial()) {
     on<PlansViewSelected>(_onPlansViewSelected);
     on<PlansUpdateRequested>(_onPlansUpdateRequested);
   }
@@ -20,6 +25,8 @@ class DayPlansBloc extends Bloc<DayPlansEvent, DayPlansState> {
 
   void _onPlansUpdateRequested(
       PlansUpdateRequested event, Emitter<DayPlansState> emit) async {
-    emit(state.copyWith(status: OperationStatus.successful));
+    emit(state.copyWith(status: OperationStatus.loading));
+    var events = await _eventRepository.getEventsByDate(event.date);
+    emit(state.copyWith(plans: events, status: OperationStatus.successful));
   }
 }

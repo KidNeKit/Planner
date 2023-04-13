@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,7 +17,9 @@ class DayPlansContainer extends StatefulWidget {
 class _DayPlansContainerState extends State<DayPlansContainer> {
   @override
   void initState() {
-    context.read<DayPlansBloc>().add(PlansUpdateRequested());
+    context
+        .read<DayPlansBloc>()
+        .add(PlansUpdateRequested(date: DateTime.now()));
     super.initState();
   }
 
@@ -26,11 +30,13 @@ class _DayPlansContainerState extends State<DayPlansContainer> {
         width: double.infinity,
         margin: const EdgeInsets.all(15.0),
         color: const Color(0xFFF8F8FD),
-        child: BlocBuilder<DayPlansBloc, DayPlansState>(
-          builder: (context, state) => state.plansView == DayPlansView.table
+        child:
+            BlocBuilder<DayPlansBloc, DayPlansState>(builder: (context, state) {
+          log(state.toString());
+          return state.plansView == DayPlansView.table
               ? const DayPlansViewTable()
-              : const DayPlansViewList(),
-        ),
+              : const DayPlansViewList();
+        }),
       ),
     );
   }

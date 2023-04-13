@@ -43,7 +43,8 @@ class PlannerApp extends StatelessWidget {
                 AuthBloc(authRepository: context.read<AuthRepository>()),
           ),
           BlocProvider(
-            create: (context) => DayPlansBloc(),
+            create: (context) =>
+                DayPlansBloc(eventRepository: context.read<EventRepository>()),
           ),
         ],
         child: MaterialApp(

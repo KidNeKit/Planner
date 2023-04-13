@@ -17,5 +17,10 @@ class PlansViewSelected extends DayPlansEvent {
 }
 
 class PlansUpdateRequested extends DayPlansEvent {
-  //final Date date;
+  final DateTime date;
+
+  const PlansUpdateRequested({required this.date});
+
+  @override
+  List<Object> get props => [date];
 }

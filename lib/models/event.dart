@@ -19,6 +19,14 @@ class Event {
     };
   }
 
+  static Event fromMap(Map<String, dynamic> map) {
+    return Event(
+        eventName: map['eventName'],
+        eventLocation: map['eventLocation'],
+        startDate: DateTime.parse(map['startDate'].toDate().toString()),
+        endDate: DateTime.parse(map['endDate'].toDate().toString()));
+  }
+
   @override
   String toString() {
     return toMap().toString();
