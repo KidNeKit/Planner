@@ -30,6 +30,7 @@ class EventRepository {
         .collection('events')
         .doc('${date.day}-${date.month}-${date.year}')
         .collection('events')
+        .orderBy('startDate')
         .get();
     return queryResult.docs.map((e) => Event.fromMap(e.data())).toList();
   }

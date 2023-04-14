@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:planner/models/enum/event_status.dart';
 
+import '../../../models/enum/event_status.dart';
 import '../../../models/event.dart';
 
 class DayPlansViewList extends StatelessWidget {
@@ -14,6 +12,7 @@ class DayPlansViewList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(0),
         itemBuilder: (context, index) => ListViewItem(event: _events[index]),
         separatorBuilder: (context, index) => const SizedBox(height: 15.0),
@@ -73,17 +72,28 @@ class ListViewItem extends StatelessWidget {
   }
 
   Widget _buildPercentIndicator(double cardHeight, BuildContext context) {
+    double percentage;
+    var now = DateTime.now();
+    if (now.isBefore(event.startDate)) {
+      percentage = 0;
+    } else if (now.isAfter(event.endDate)) {
+      percentage = 1;
+    } else {
+      var duration = event.endDate.difference(event.startDate).inSeconds;
+      var last = now.difference(event.startDate).inSeconds;
+      percentage = last / duration;
+    }
     return Positioned(
       top: 10,
       right: 15,
       child: CircularPercentIndicator(
         radius: 1 / 6.5 * cardHeight,
-        percent: 0.75,
+        percent: percentage,
         progressColor: const Color(0xFF77E6B6),
         backgroundColor: const Color(0xFFD7ECF1),
         circularStrokeCap: CircularStrokeCap.round,
         center: Text(
-          '75%',
+          '${(100 * percentage).toInt()}%',
           style: Theme.of(context)
               .textTheme
               .labelSmall!
