@@ -32,7 +32,18 @@ class _DayPlansContainerState extends State<DayPlansContainer> {
         color: const Color(0xFFF8F8FD),
         child:
             BlocBuilder<DayPlansBloc, DayPlansState>(builder: (context, state) {
-          log(state.toString());
+          log('state: $state');
+          if (state.plans.isEmpty) {
+            return Center(
+              child: Text(
+                'There is no event for today',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Colors.black),
+              ),
+            );
+          }
           return state.plansView == DayPlansView.table
               ? const DayPlansViewTable()
               : const DayPlansViewList();

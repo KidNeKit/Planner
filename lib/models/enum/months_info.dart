@@ -1,16 +1,16 @@
 enum MonthsInfo {
-  january(1, 'January', 31),
-  february(2, 'February', 28),
-  march(3, 'March', 31),
-  april(4, 'April', 30),
+  january(1, 'Jan', 31),
+  february(2, 'Feb', 28),
+  march(3, 'Mar', 31),
+  april(4, 'Apr', 30),
   may(5, 'May', 31),
-  june(6, 'June', 30),
-  july(7, 'July', 31),
-  august(8, 'August', 31),
-  september(9, 'September', 30),
-  october(10, 'October', 31),
-  november(11, 'November', 30),
-  december(12, 'December', 31);
+  june(6, 'Jun', 30),
+  july(7, 'Jul', 31),
+  august(8, 'Aug', 31),
+  september(9, 'Sep', 30),
+  october(10, 'Oct', 31),
+  november(11, 'Nov', 30),
+  december(12, 'Dec', 31);
 
   final int order;
   final String fullName;

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,46 +52,46 @@ class _DayPlansViewTableState extends State<DayPlansViewTable> {
                 borderRadius: BorderRadius.circular(20.0),
                 child: SingleChildScrollView(
                   controller: _scrollController,
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: List.generate(
-                            DayPlansViewTable.hoursCount,
-                            (index) => HourContainer(
-                                  index: index,
-                                  hourHeight: hourHeight,
-                                  hourWidth: hourWidth,
-                                )),
-                      ),
-                      Positioned(
-                        left: DayPlansViewTable.numberWidthCoef * hourWidth,
-                        child: Container(
-                          height: DayPlansViewTable.hoursCount * hourHeight,
-                          width: 1,
-                          color: Colors.grey.withOpacity(0.5),
-                        ),
-                      ),
-                      //todo add event here
-                      EventContainer(
-                          hours: 9,
-                          minutes: 45,
-                          containerHeight: hourHeight,
-                          containerWidth: hourWidth),
-                      EventContainer(
-                          hours: 6,
-                          minutes: 5,
-                          containerHeight: hourHeight,
-                          containerWidth: hourWidth),
-                      //todo set top offset
-                      Positioned(
-                        top: 17 * hourHeight,
-                        child: Container(
-                          height: 2,
-                          width: hourWidth,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ],
+                  child: BlocBuilder<DayPlansBloc, DayPlansState>(
+                    builder: (context, state) {
+                      return Stack(
+                        children: [
+                          Column(
+                            children: List.generate(
+                                DayPlansViewTable.hoursCount,
+                                (index) => HourContainer(
+                                      index: index,
+                                      hourHeight: hourHeight,
+                                      hourWidth: hourWidth,
+                                    )),
+                          ),
+                          Positioned(
+                            left: DayPlansViewTable.numberWidthCoef * hourWidth,
+                            child: Container(
+                              height: DayPlansViewTable.hoursCount * hourHeight,
+                              width: 1,
+                              color: Colors.grey.withOpacity(0.5),
+                            ),
+                          ),
+                          ...state.plans.map((e) {
+                            return EventContainer(
+                                hours: e.startDate.hour,
+                                minutes: e.startDate.minute,
+                                containerHeight: hourHeight,
+                                containerWidth: hourWidth);
+                          }).toList(),
+                          //todo set top offset
+                          Positioned(
+                            top: 17 * hourHeight,
+                            child: Container(
+                              height: 2,
+                              width: hourWidth,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),
@@ -149,8 +151,8 @@ class HourContainer extends StatelessWidget {
 }
 
 class EventContainer extends StatelessWidget {
-  final double hours;
-  final double minutes;
+  final int hours;
+  final int minutes;
   final double containerHeight;
   final double containerWidth;
   const EventContainer(

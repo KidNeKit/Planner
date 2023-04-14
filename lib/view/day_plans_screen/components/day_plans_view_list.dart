@@ -31,16 +31,30 @@ class DayPlansViewList extends StatelessWidget {
         // }
         return ListView.separated(
             padding: const EdgeInsets.all(0),
-            itemBuilder: (context, index) => const ListViewItem(),
+            itemBuilder: (context, index) {
+              var event = state.plans[index];
+              return ListViewItem(
+                eventName: event.eventName,
+                startDate: event.startDate,
+                endDate: event.endDate,
+              );
+            },
             separatorBuilder: (context, index) => const SizedBox(height: 15.0),
-            itemCount: 4);
+            itemCount: state.plans.length);
       },
     );
   }
 }
 
 class ListViewItem extends StatelessWidget {
-  const ListViewItem({super.key});
+  final String eventName;
+  final DateTime startDate;
+  final DateTime endDate;
+  const ListViewItem(
+      {required this.eventName,
+      required this.startDate,
+      required this.endDate,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +80,9 @@ class ListViewItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: CardBody(
+                  eventName: eventName,
+                  startDate: startDate,
+                  endDate: endDate,
                   cardHeight: cardHeight,
                 ),
               ),
@@ -107,8 +124,16 @@ class ListViewItem extends StatelessWidget {
 }
 
 class CardBody extends StatelessWidget {
+  final String eventName;
+  final DateTime startDate;
+  final DateTime endDate;
   final double cardHeight;
-  const CardBody({required this.cardHeight, super.key});
+  const CardBody(
+      {required this.eventName,
+      required this.startDate,
+      required this.endDate,
+      required this.cardHeight,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +145,7 @@ class CardBody extends StatelessWidget {
             const Icon(Icons.access_time),
             const SizedBox(width: 7.0),
             Text(
-              'Today - 12:45 pm',
+              '${startDate.hour < 10 ? '0' : ''}${startDate.hour}:${startDate.minute < 10 ? '0' : ''}${startDate.minute} - ${endDate.hour < 10 ? '0' : ''}${endDate.hour}:${endDate.minute < 10 ? '0' : ''}${endDate.minute}',
               style: Theme.of(context)
                   .textTheme
                   .labelMedium!
@@ -134,7 +159,7 @@ class CardBody extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'Event label',
+                eventName,
                 maxLines: 1,
                 softWrap: false,
                 overflow: TextOverflow.fade,
