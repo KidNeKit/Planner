@@ -50,7 +50,7 @@ class _DayPlansContainerState extends State<DayPlansContainer> {
           } else if (state.plans.isEmpty) {
             return Center(
               child: Text(
-                'There is no event for today',
+                'There are no event for today',
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!

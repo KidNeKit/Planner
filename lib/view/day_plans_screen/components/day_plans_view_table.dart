@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../../../models/event.dart';
 
@@ -22,9 +25,9 @@ class _DayPlansViewTableState extends State<DayPlansViewTable> {
   @override
   void initState() {
     _scrollController = ScrollController();
-    //SchedulerBinding.instance.addPostFrameCallback((_) {
-    //  _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-    //});
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    });
     super.initState();
   }
 
@@ -62,21 +65,15 @@ class _DayPlansViewTableState extends State<DayPlansViewTable> {
                     ),
                   ),
                   ...widget._events.map((e) {
+                    var minutes = e.endDate.difference(e.startDate).inMinutes;
                     return EventContainer(
                         hours: e.startDate.hour,
                         minutes: e.startDate.minute,
-                        containerHeight: hourHeight,
+                        offsetHeight: hourHeight,
+                        containerHeight: minutes / 60 * hourHeight,
                         containerWidth: hourWidth);
                   }).toList(),
-                  //todo set top offset
-                  Positioned(
-                    top: 17 * hourHeight,
-                    child: Container(
-                      height: 2,
-                      width: hourWidth,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
+                  _buildTimeLine(hourWidth, hourHeight, context),
                 ],
               ),
             ),
@@ -84,6 +81,26 @@ class _DayPlansViewTableState extends State<DayPlansViewTable> {
         );
       },
     );
+  }
+
+  Widget _buildTimeLine(
+      double hourWidth, double hourHeight, BuildContext context) {
+    var now = DateTime.now();
+    var offset = now.hour + now.minute / 60;
+    return Positioned(
+      top: offset * hourHeight,
+      child: Container(
+        height: 2,
+        width: hourWidth,
+        color: Theme.of(context).primaryColor,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
 
@@ -137,11 +154,13 @@ class HourContainer extends StatelessWidget {
 class EventContainer extends StatelessWidget {
   final int hours;
   final int minutes;
+  final double offsetHeight;
   final double containerHeight;
   final double containerWidth;
   const EventContainer(
       {required this.hours,
       required this.minutes,
+      required this.offsetHeight,
       required this.containerHeight,
       required this.containerWidth,
       super.key});
@@ -149,7 +168,7 @@ class EventContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: hours * containerHeight + minutes / 60 * containerHeight,
+      top: hours * offsetHeight + minutes / 60 * offsetHeight,
       left: DayPlansViewTable.numberWidthCoef * containerWidth,
       child: Container(
         height: containerHeight,
