@@ -1,60 +1,29 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'dart:developer';
 
-import '../../../blocs/day_plans/day_plans_bloc.dart';
-import '../../../models/enum/operation_status.dart';
+import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:planner/models/enum/event_status.dart';
+
+import '../../../models/event.dart';
 
 class DayPlansViewList extends StatelessWidget {
-  const DayPlansViewList({super.key});
+  final List<Event> _events;
+  const DayPlansViewList({required List<Event> events, super.key})
+      : _events = events;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DayPlansBloc, DayPlansState>(
-      builder: (context, state) {
-        if (state.status == OperationStatus.loading ||
-            state.status == OperationStatus.initial) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        // } else if (state.status == OperationStatus.failed) {
-        //   return Center(
-        //     child: Column(
-        //       mainAxisSize: MainAxisSize.min,
-        //       children: [
-        //         Icon(Icons.circle_outlined),
-        //         Text('Try again'),
-        //       ],
-        //     ),
-        //   );
-        // }
-        return ListView.separated(
-            padding: const EdgeInsets.all(0),
-            itemBuilder: (context, index) {
-              var event = state.plans[index];
-              return ListViewItem(
-                eventName: event.eventName,
-                startDate: event.startDate,
-                endDate: event.endDate,
-              );
-            },
-            separatorBuilder: (context, index) => const SizedBox(height: 15.0),
-            itemCount: state.plans.length);
-      },
-    );
+    return ListView.separated(
+        padding: const EdgeInsets.all(0),
+        itemBuilder: (context, index) => ListViewItem(event: _events[index]),
+        separatorBuilder: (context, index) => const SizedBox(height: 15.0),
+        itemCount: _events.length);
   }
 }
 
 class ListViewItem extends StatelessWidget {
-  final String eventName;
-  final DateTime startDate;
-  final DateTime endDate;
-  const ListViewItem(
-      {required this.eventName,
-      required this.startDate,
-      required this.endDate,
-      super.key});
+  final Event event;
+  const ListViewItem({required this.event, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +49,7 @@ class ListViewItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: CardBody(
-                  eventName: eventName,
-                  startDate: startDate,
-                  endDate: endDate,
+                  event: event,
                   cardHeight: cardHeight,
                 ),
               ),
@@ -99,41 +66,38 @@ class ListViewItem extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-            top: 10,
-            right: 15,
-            child: CircularPercentIndicator(
-              radius: 1 / 6.5 * cardHeight,
-              percent: 0.75,
-              progressColor: const Color(0xFF77E6B6),
-              backgroundColor: const Color(0xFFD7ECF1),
-              circularStrokeCap: CircularStrokeCap.round,
-              center: Text(
-                '75%',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall!
-                    .copyWith(color: Colors.black, fontWeight: FontWeight.w500),
-              ),
-            ),
-          ),
+          _buildPercentIndicator(cardHeight, context),
         ],
       );
     });
   }
+
+  Widget _buildPercentIndicator(double cardHeight, BuildContext context) {
+    return Positioned(
+      top: 10,
+      right: 15,
+      child: CircularPercentIndicator(
+        radius: 1 / 6.5 * cardHeight,
+        percent: 0.75,
+        progressColor: const Color(0xFF77E6B6),
+        backgroundColor: const Color(0xFFD7ECF1),
+        circularStrokeCap: CircularStrokeCap.round,
+        center: Text(
+          '75%',
+          style: Theme.of(context)
+              .textTheme
+              .labelSmall!
+              .copyWith(color: Colors.black, fontWeight: FontWeight.w500),
+        ),
+      ),
+    );
+  }
 }
 
 class CardBody extends StatelessWidget {
-  final String eventName;
-  final DateTime startDate;
-  final DateTime endDate;
+  final Event event;
   final double cardHeight;
-  const CardBody(
-      {required this.eventName,
-      required this.startDate,
-      required this.endDate,
-      required this.cardHeight,
-      super.key});
+  const CardBody({required this.event, required this.cardHeight, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +109,7 @@ class CardBody extends StatelessWidget {
             const Icon(Icons.access_time),
             const SizedBox(width: 7.0),
             Text(
-              '${startDate.hour < 10 ? '0' : ''}${startDate.hour}:${startDate.minute < 10 ? '0' : ''}${startDate.minute} - ${endDate.hour < 10 ? '0' : ''}${endDate.hour}:${endDate.minute < 10 ? '0' : ''}${endDate.minute}',
+              '${event.startDate.hour < 10 ? '0' : ''}${event.startDate.hour}:${event.startDate.minute < 10 ? '0' : ''}${event.startDate.minute} - ${event.endDate.hour < 10 ? '0' : ''}${event.endDate.hour}:${event.endDate.minute < 10 ? '0' : ''}${event.endDate.minute}',
               style: Theme.of(context)
                   .textTheme
                   .labelMedium!
@@ -154,12 +118,12 @@ class CardBody extends StatelessWidget {
             const Spacer(),
           ],
         ),
-        const SizedBox(height: 20.0),
+        const SizedBox(height: 5.0),
         Row(
           children: [
             Expanded(
               child: Text(
-                eventName,
+                event.eventName,
                 maxLines: 1,
                 softWrap: false,
                 overflow: TextOverflow.fade,
@@ -171,48 +135,69 @@ class CardBody extends StatelessWidget {
             ),
           ],
         ),
+        Text(
+          event.eventLocation,
+          maxLines: 1,
+          softWrap: false,
+          overflow: TextOverflow.fade,
+          style: Theme.of(context)
+              .textTheme
+              .labelLarge!
+              .copyWith(color: Colors.black),
+        ),
         const Spacer(),
         const Divider(),
         const SizedBox(height: 5.0),
         Row(
           children: [
-            Container(
-              height: 1 / 5 * cardHeight,
-              width: 1 / 5 * cardHeight,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-            ),
-            const SizedBox(width: 10.0),
-            Text(
-              'Friend name',
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium!
-                  .copyWith(color: Colors.black),
-            ),
+            // Container(
+            //   height: 1 / 5 * cardHeight,
+            //   width: 1 / 5 * cardHeight,
+            //   decoration: BoxDecoration(
+            //     color: Colors.grey,
+            //     borderRadius: BorderRadius.circular(5.0),
+            //   ),
+            // ),
+            // const SizedBox(width: 10.0),
+            // Text(
+            //   'Friend name',
+            //   style: Theme.of(context)
+            //       .textTheme
+            //       .labelMedium!
+            //       .copyWith(color: Colors.black),
+            //),
             const Spacer(),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 7.0, vertical: 5.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: const Color(0xFFA880E3).withOpacity(0.15),
-                border:
-                    Border.all(color: const Color(0xFFA880E3).withOpacity(0.7)),
-              ),
-              child: Text(
-                'IN PROGRESS',
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall!
-                    .copyWith(color: const Color(0xFFA880E3)),
-              ),
-            ),
+            _buildEventStatus(context),
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildEventStatus(BuildContext context) {
+    var now = DateTime.now();
+    EventStatus status;
+    if (now.isAfter(event.startDate) && now.isBefore(event.endDate)) {
+      status = EventStatus.inProgress;
+    } else if (now.isAfter(event.endDate)) {
+      status = EventStatus.completed;
+    } else {
+      status = EventStatus.pending;
+    }
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 5.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: status.color.withOpacity(0.15),
+        border: Border.all(color: status.color.withOpacity(0.7)),
+      ),
+      child: Text(
+        status.status,
+        style: Theme.of(context)
+            .textTheme
+            .labelSmall!
+            .copyWith(color: status.color),
+      ),
     );
   }
 }

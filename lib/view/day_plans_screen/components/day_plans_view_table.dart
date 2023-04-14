@@ -1,18 +1,16 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../blocs/day_plans/day_plans_bloc.dart';
-import '../../../models/enum/operation_status.dart';
+import '../../../models/event.dart';
 
 class DayPlansViewTable extends StatefulWidget {
   static const int hoursCount = 24;
   static const double numberWidthCoef = 0.15;
   static const double freeWidthCoef = 0.85;
 
-  const DayPlansViewTable({super.key});
+  final List<Event> _events;
+
+  const DayPlansViewTable({required List<Event> events, super.key})
+      : _events = events;
 
   @override
   State<DayPlansViewTable> createState() => _DayPlansViewTableState();
@@ -32,71 +30,57 @@ class _DayPlansViewTableState extends State<DayPlansViewTable> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DayPlansBloc, DayPlansState>(
-      builder: (context, state) {
-        if (state.status == OperationStatus.loading ||
-            state.status == OperationStatus.initial) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return LayoutBuilder(
-          builder: (ctx, constraints) {
-            double hourWidth = constraints.maxWidth;
-            double hourHeight = 0.07 * MediaQuery.of(context).size.height;
-            return Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: BlocBuilder<DayPlansBloc, DayPlansState>(
-                    builder: (context, state) {
-                      return Stack(
-                        children: [
-                          Column(
-                            children: List.generate(
-                                DayPlansViewTable.hoursCount,
-                                (index) => HourContainer(
-                                      index: index,
-                                      hourHeight: hourHeight,
-                                      hourWidth: hourWidth,
-                                    )),
-                          ),
-                          Positioned(
-                            left: DayPlansViewTable.numberWidthCoef * hourWidth,
-                            child: Container(
-                              height: DayPlansViewTable.hoursCount * hourHeight,
-                              width: 1,
-                              color: Colors.grey.withOpacity(0.5),
-                            ),
-                          ),
-                          ...state.plans.map((e) {
-                            return EventContainer(
-                                hours: e.startDate.hour,
-                                minutes: e.startDate.minute,
-                                containerHeight: hourHeight,
-                                containerWidth: hourWidth);
-                          }).toList(),
-                          //todo set top offset
-                          Positioned(
-                            top: 17 * hourHeight,
-                            child: Container(
-                              height: 2,
-                              width: hourWidth,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ],
-                      );
-                    },
+    return LayoutBuilder(
+      builder: (ctx, constraints) {
+        double hourWidth = constraints.maxWidth;
+        double hourHeight = 0.07 * MediaQuery.of(context).size.height;
+        return Card(
+          elevation: 2,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Stack(
+                children: [
+                  Column(
+                    children: List.generate(
+                        DayPlansViewTable.hoursCount,
+                        (index) => HourContainer(
+                              index: index,
+                              hourHeight: hourHeight,
+                              hourWidth: hourWidth,
+                            )),
                   ),
-                ),
+                  Positioned(
+                    left: DayPlansViewTable.numberWidthCoef * hourWidth,
+                    child: Container(
+                      height: DayPlansViewTable.hoursCount * hourHeight,
+                      width: 1,
+                      color: Colors.grey.withOpacity(0.5),
+                    ),
+                  ),
+                  ...widget._events.map((e) {
+                    return EventContainer(
+                        hours: e.startDate.hour,
+                        minutes: e.startDate.minute,
+                        containerHeight: hourHeight,
+                        containerWidth: hourWidth);
+                  }).toList(),
+                  //todo set top offset
+                  Positioned(
+                    top: 17 * hourHeight,
+                    child: Container(
+                      height: 2,
+                      width: hourWidth,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                ],
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );
