@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'components/invitations_block.dart';
+
 class ContactsScreen extends StatelessWidget {
   const ContactsScreen({super.key});
 
@@ -68,6 +70,11 @@ class ContactsScreen extends StatelessWidget {
                   topLeft: Radius.circular(20.0),
                   topRight: Radius.circular(20.0),
                 ),
+              ),
+              child: Column(
+                children: const [
+                  InvitationsBlock(),
+                ],
               ),
             ),
           ),
