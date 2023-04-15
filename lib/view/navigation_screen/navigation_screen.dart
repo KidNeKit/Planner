@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planner/view/event_creation_screen/event_creation_screen.dart';
 
 import '../../cubits/navigation/navigation_cubit.dart';
+import '../contacts_screen/contacts_screen.dart';
 import '../day_plans_screen/day_plans_screen.dart';
+import '../event_creation_screen/event_creation_screen.dart';
 import '../home_screen/home_screen.dart';
 import 'components/bottom_bar.dart';
 
@@ -12,6 +13,7 @@ class NavigationScreen extends StatelessWidget {
   static List<Widget> screens = const [
     HomeScreen(),
     DayPlansScreen(),
+    ContactsScreen(),
   ];
 
   const NavigationScreen({super.key});
