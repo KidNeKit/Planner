@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../add_contact_screen/add_contact_screen.dart';
+import '../global_components/custom_search.dart';
 import 'components/invitations_block.dart';
 
 class ContactsScreen extends StatelessWidget {
@@ -26,28 +28,16 @@ class ContactsScreen extends StatelessWidget {
                         'Contacts',
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
-                      const Icon(Icons.add_box_rounded, color: Colors.white),
+                      GestureDetector(
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(AddContactScreen.routeName),
+                        child: const Icon(Icons.add_box_rounded,
+                            color: Colors.white),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 10.0),
-                  TextField(
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(color: Colors.black),
-                    cursorColor: Theme.of(context).primaryColor,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 5.0),
-                      prefixIcon: const Icon(Icons.search, color: Colors.black),
-                      hintText: 'Search',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                  ),
+                  CustomSearch(onChangedFunc: (value) {}),
                   const SizedBox(height: 10.0),
                   Text('Last Search',
                       style: Theme.of(context).textTheme.labelLarge),

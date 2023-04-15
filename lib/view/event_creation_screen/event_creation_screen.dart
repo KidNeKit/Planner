@@ -7,7 +7,7 @@ import 'components/event_creation_body.dart';
 import 'components/event_creation_header.dart';
 
 class EventCreationScreen extends StatelessWidget {
-  static const String routeName = '/event-creation';
+  static const String routeName = '/eventCreation';
   const EventCreationScreen({super.key});
 
   @override

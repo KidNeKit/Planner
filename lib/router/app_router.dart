@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../view/add_contact_screen/add_contact_screen.dart';
 import '../view/event_creation_screen/event_creation_screen.dart';
 import '../view/login_screen/login_screen.dart';
 import '../view/navigation_screen/navigation_screen.dart';
@@ -19,6 +20,8 @@ class AppRouter {
         return RegistrationScreen.getRoute();
       case EventCreationScreen.routeName:
         return EventCreationScreen.getRoute();
+      case AddContactScreen.routeName:
+        return AddContactScreen.getRoute();
       default:
         return LoginScreen.getRoute();
     }
