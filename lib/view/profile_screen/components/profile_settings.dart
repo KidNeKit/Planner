@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/auth/auth_bloc.dart';
+import '../../../resources/colors.dart';
 import '../../login_screen/login_screen.dart';
+import '../settings_screens/personal_data_screen/personal_data_screen.dart';
 import 'settings_button.dart';
 
 class ProfileSettings extends StatelessWidget {
@@ -15,7 +17,8 @@ class ProfileSettings extends StatelessWidget {
         const SizedBox(height: 10.0),
         SettingsButton(
           text: 'Personal Data',
-          onPressedFunc: () {},
+          onPressedFunc: () =>
+              Navigator.of(context).pushNamed(PersonalDataScreen.routeName),
         ),
         const SizedBox(height: 10.0),
         BlocListener<AuthBloc, AuthState>(
@@ -26,6 +29,7 @@ class ProfileSettings extends StatelessWidget {
           },
           child: SettingsButton(
             text: 'Log Out',
+            color: neonRed,
             onPressedFunc: () =>
                 context.read<AuthBloc>().add(LogoutRequested()),
           ),

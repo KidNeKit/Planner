@@ -4,6 +4,7 @@ import '../view/add_contact_screen/add_contact_screen.dart';
 import '../view/event_creation_screen/event_creation_screen.dart';
 import '../view/login_screen/login_screen.dart';
 import '../view/navigation_screen/navigation_screen.dart';
+import '../view/profile_screen/settings_screens/personal_data_screen/personal_data_screen.dart';
 import '../view/registration_screen/registration_screen.dart';
 import '../view/splash_screen/splash_screen.dart';
 
@@ -22,6 +23,8 @@ class AppRouter {
         return EventCreationScreen.getRoute();
       case AddContactScreen.routeName:
         return AddContactScreen.getRoute();
+      case PersonalDataScreen.routeName:
+        return PersonalDataScreen.getRoute();
       default:
         return LoginScreen.getRoute();
     }
