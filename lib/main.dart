@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'blocs/auth/auth_bloc.dart';
 import 'blocs/day_plans/day_plans_bloc.dart';
+import 'cubits/registration/registration_cubit.dart';
 import 'repositories/auth_repository.dart';
 import 'repositories/event_repository.dart';
 import 'repositories/user_repository.dart';
@@ -42,9 +43,13 @@ class PlannerApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            lazy: false,
-            create: (context) =>
-                AuthBloc(authRepository: context.read<AuthRepository>()),
+            create: (context) => AuthBloc(
+                authRepository: context.read<AuthRepository>(),
+                userRepository: context.read<UserRepository>()),
+          ),
+          BlocProvider(
+            create: (context) => RegistrationCubit(
+                authRepository: context.read<AuthRepository>()),
           ),
           BlocProvider(
             create: (context) =>

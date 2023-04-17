@@ -8,7 +8,7 @@ import '../../repositories/auth_repository.dart';
 import '../global_components/custom_text_field.dart';
 import '../global_components/custom_text_sizes.dart';
 import '../login_screen/login_screen.dart';
-import '../navigation_screen/navigation_screen.dart';
+import '../onboarding_screen/onboarding_screen.dart';
 
 class RegistrationScreen extends StatelessWidget {
   static const String routeName = '/registration';
@@ -170,7 +170,7 @@ class RegistrationScreen extends StatelessWidget {
           listener: (context, state) {
             if (state.user != null) {
               Navigator.of(context)
-                  .pushReplacementNamed(NavigationScreen.routeName);
+                  .pushReplacementNamed(OnboardingScreen.routeName);
             }
           },
           child: const RegistrationScreen(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/auth/auth_bloc.dart';
+import '../../../models/custom_user.dart';
 import '../../../resources/colors.dart';
 import 'today_achievements.dart';
 
@@ -18,7 +19,9 @@ class HomeBody extends StatelessWidget {
           const SizedBox(height: 30.0),
           BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
-              return Text('Hello, ${state.user!.username}',
+              CustomUser user = state.user!;
+              return Text(
+                  'Hello, ${user.name.isEmpty ? user.username : user.name}',
                   style: Theme.of(context).textTheme.titleMedium);
             },
           ),

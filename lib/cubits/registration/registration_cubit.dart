@@ -23,11 +23,7 @@ class RegistrationCubit extends Cubit<RegistrationState> {
   }
 
   void changeSecondPassword(String password) {
-    emit(state.copyWith(password: password));
-  }
-
-  void changeUsername(String username) {
-    emit(state.copyWith(username: username));
+    emit(state.copyWith(secondPassword: password));
   }
 
   void signUpWithEmailAndPassword() async {
@@ -37,7 +33,7 @@ class RegistrationCubit extends Cubit<RegistrationState> {
         throw Exception('Password missamtch');
       }
       await _authRepository.signUpWithEmailAndPassword(
-          state.email, state.password, state.username);
+          state.email, state.password);
     } catch (e) {
       log('Error: $e');
       emit(state.copyWith(status: OperationStatus.failed));

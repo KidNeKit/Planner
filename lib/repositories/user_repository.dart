@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:planner/models/custom_user.dart';
 
 import '../models/enum/search_user.dart';
 
@@ -8,6 +9,14 @@ class UserRepository {
 
   UserRepository({required FirebaseFirestore firestore})
       : _firestore = firestore;
+
+  Future<CustomUser> getUserById(String id) async {
+    var query = await _firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    return CustomUser.fromMap(query.data()!);
+  }
 
   Future<List<SearchUser>> getUsersBySearch(String search) async {
     if (search.isEmpty) {
@@ -22,5 +31,12 @@ class UserRepository {
         .where(
             (element) => element.id != FirebaseAuth.instance.currentUser!.uid)
         .toList();
+  }
+
+  Future<void> updateUserProfile(Map<String, dynamic> map) async {
+    await _firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update(map);
   }
 }

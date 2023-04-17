@@ -14,8 +14,7 @@ class AuthRepository {
 
   Stream<User?> get user => _firebaseAuth.authStateChanges();
 
-  Future<void> signUpWithEmailAndPassword(
-      String email, String password, String username) async {
+  Future<void> signUpWithEmailAndPassword(String email, String password) async {
     try {
       await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password)
@@ -24,8 +23,8 @@ class AuthRepository {
                   .doc(value.user!.uid)
                   .set({
                 'email': email,
-                'username': username,
-                'id': value.user!.uid
+                'id': value.user!.uid,
+                'username': 'guest_${value.user!.uid}',
               }));
     } catch (e) {
       log('Registration error: $e');
@@ -40,11 +39,6 @@ class AuthRepository {
     } catch (e) {
       log('Authorization error: $e');
     }
-  }
-
-  Future<String> getUserUsernameById(String id) async {
-    var doc = await _firestore.collection(userCollectionPath).doc(id).get();
-    return doc.data()!['username'];
   }
 
   Future<void> signOut() async {

@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planner/models/custom_user.dart';
+import 'package:planner/repositories/user_repository.dart';
 
 import '../../repositories/auth_repository.dart';
 
@@ -13,10 +14,14 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
+  final UserRepository _userRepository;
   late StreamSubscription _streamSubscription;
 
-  AuthBloc({required AuthRepository authRepository})
+  AuthBloc(
+      {required AuthRepository authRepository,
+      required UserRepository userRepository})
       : _authRepository = authRepository,
+        _userRepository = userRepository,
         super(const AuthState.unauthenticated()) {
     on<UserChanged>(onUserChanged);
     on<LogoutRequested>(onLogoutRequested);
@@ -32,9 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthState.unauthenticated());
     } else {
       User user = event.user!;
-      String username = await _authRepository.getUserUsernameById(user.uid);
-      CustomUser myUser =
-          CustomUser(id: user.uid, email: user.email!, username: username);
+      CustomUser myUser = await _userRepository.getUserById(user.uid);
       emit(AuthState.authenticated(myUser));
     }
   }
