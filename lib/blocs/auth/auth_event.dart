@@ -16,4 +16,13 @@ class UserChanged extends AuthEvent {
   List<Object?> get props => [user];
 }
 
+class UserUpdated extends AuthEvent {
+  final String userId;
+
+  const UserUpdated(this.userId);
+
+  @override
+  List<Object?> get props => [userId];
+}
+
 class LogoutRequested extends AuthEvent {}

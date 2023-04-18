@@ -24,6 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _userRepository = userRepository,
         super(const AuthState.unauthenticated()) {
     on<UserChanged>(onUserChanged);
+    on<UserUpdated>(onUserUpdated);
     on<LogoutRequested>(onLogoutRequested);
 
     _streamSubscription = _authRepository.user.listen((firebaseUser) {
@@ -40,6 +41,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       CustomUser myUser = await _userRepository.getUserById(user.uid);
       emit(AuthState.authenticated(myUser));
     }
+  }
+
+  void onUserUpdated(UserUpdated event, Emitter<AuthState> emit) async {
+    CustomUser myUser = await _userRepository.getUserById(event.userId);
+    emit(AuthState.authenticated(myUser));
   }
 
   void onLogoutRequested(LogoutRequested event, Emitter<AuthState> emit) {
