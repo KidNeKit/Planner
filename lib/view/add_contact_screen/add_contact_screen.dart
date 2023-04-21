@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/searcher/searcher_bloc.dart';
+import '../../repositories/invitation_repository.dart';
 import '../../repositories/user_repository.dart';
 import '../global_components/custom_text_sizes.dart';
 import 'components/search_header.dart';
@@ -31,8 +32,10 @@ class AddContactScreen extends StatelessWidget {
   static MaterialPageRoute getRoute() {
     return MaterialPageRoute(
       builder: (context) => BlocProvider(
-        create: (context) =>
-            SearcherBloc(userRepository: context.read<UserRepository>()),
+        create: (context) => SearcherBloc(
+          userRepository: context.read<UserRepository>(),
+          invitationRepository: context.read<InvitationRepository>(),
+        ),
         child: const AddContactScreen(),
       ),
     );

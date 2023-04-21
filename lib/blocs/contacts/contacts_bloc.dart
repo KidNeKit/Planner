@@ -4,7 +4,8 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../models/contact_user.dart';
+import '../../models/custom_user.dart';
+import '../../repositories/invitation_repository.dart';
 import '../../repositories/user_repository.dart';
 
 part 'contacts_event.dart';
@@ -12,14 +13,18 @@ part 'contacts_state.dart';
 
 class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   final UserRepository _userRepository;
+  final InvitationRepository _invitationRepository;
 
   late StreamSubscription _invitationsSubscription;
 
-  ContactsBloc({required UserRepository userRepository})
-      : _userRepository = userRepository,
+  ContactsBloc({
+    required UserRepository userRepository,
+    required InvitationRepository invitationRepository,
+  })  : _userRepository = userRepository,
+        _invitationRepository = invitationRepository,
         super(ContactsState.initial()) {
     _invitationsSubscription =
-        _userRepository.invitationsStream.listen((invitations) {
+        _invitationRepository.invitationsStream.listen((invitations) {
       log('received list of invitations: $invitations');
       add(InvitationsFetched(invitations));
     });
@@ -40,13 +45,13 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
 
   void _onInvitationConfirmed(
       InvitationConfirmed event, Emitter<ContactsState> emit) async {
-    await _userRepository.confirmUserInvitation(event.user);
+    await _invitationRepository.confirmUserInvitation(event.user);
     //emit(state.copyWith(invitations: state.invitations..remove(event.user)));
   }
 
   void _onInvitationCanceled(
       InvitationCanceled event, Emitter<ContactsState> emit) async {
-    await _userRepository.cancelUserInvitation(event.user);
+    await _invitationRepository.cancelUserInvitation(event.user);
     //emit(state.copyWith(invitations: state.invitations..remove(event.user)));
   }
 

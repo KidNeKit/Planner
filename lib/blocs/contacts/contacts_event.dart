@@ -8,7 +8,7 @@ abstract class ContactsEvent extends Equatable {
 }
 
 class InvitationsFetched extends ContactsEvent {
-  final List<ContactUser> users;
+  final List<CustomUser> users;
 
   const InvitationsFetched(this.users);
 
@@ -17,7 +17,7 @@ class InvitationsFetched extends ContactsEvent {
 }
 
 class InvitationReceived extends ContactsEvent {
-  final ContactUser user;
+  final CustomUser user;
 
   const InvitationReceived(this.user);
 
@@ -26,7 +26,7 @@ class InvitationReceived extends ContactsEvent {
 }
 
 class InvitationConfirmed extends ContactsEvent {
-  final ContactUser user;
+  final CustomUser user;
 
   const InvitationConfirmed(this.user);
 
@@ -35,7 +35,7 @@ class InvitationConfirmed extends ContactsEvent {
 }
 
 class InvitationCanceled extends ContactsEvent {
-  final ContactUser user;
+  final CustomUser user;
 
   const InvitationCanceled(this.user);
 

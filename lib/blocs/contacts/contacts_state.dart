@@ -1,8 +1,8 @@
 part of 'contacts_bloc.dart';
 
 class ContactsState extends Equatable {
-  final List<ContactUser> contacts;
-  final List<ContactUser> invitations;
+  final List<CustomUser> contacts;
+  final List<CustomUser> invitations;
 
   const ContactsState({
     required this.contacts,
@@ -14,8 +14,8 @@ class ContactsState extends Equatable {
         invitations = [];
 
   ContactsState copyWith({
-    List<ContactUser>? contacts,
-    List<ContactUser>? invitations,
+    List<CustomUser>? contacts,
+    List<CustomUser>? invitations,
   }) {
     return ContactsState(
       contacts: contacts ?? this.contacts,

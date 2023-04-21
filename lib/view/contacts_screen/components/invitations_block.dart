@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/contacts/contacts_bloc.dart';
-import '../../../models/contact_user.dart';
+import '../../../models/custom_user.dart';
 import '../../../resources/colors.dart';
 import '../../global_components/custom_text_sizes.dart';
 
@@ -42,7 +42,7 @@ class InvitationsBlock extends StatelessWidget {
 }
 
 class FriendInviteItem extends StatelessWidget {
-  final ContactUser user;
+  final CustomUser user;
 
   const FriendInviteItem({required this.user, super.key});
 
@@ -76,7 +76,7 @@ class FriendInviteItem extends StatelessWidget {
 }
 
 class CancelButton extends StatelessWidget {
-  final ContactUser user;
+  final CustomUser user;
 
   const CancelButton({required this.user, super.key});
 
@@ -101,7 +101,7 @@ class CancelButton extends StatelessWidget {
 }
 
 class ConfirmButton extends StatelessWidget {
-  final ContactUser user;
+  final CustomUser user;
 
   const ConfirmButton({required this.user, super.key});
 

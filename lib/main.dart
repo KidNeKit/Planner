@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:planner/repositories/invitation_repository.dart';
 
 import 'blocs/auth/auth_bloc.dart';
 import 'blocs/contacts/contacts_bloc.dart';
@@ -44,6 +45,12 @@ class PlannerApp extends StatelessWidget {
             firebaseAuth: _firebaseAuth,
           ),
         ),
+        RepositoryProvider(
+          create: (context) => InvitationRepository(
+            firestore: _firestore,
+            firebaseAuth: _firebaseAuth,
+          ),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -61,8 +68,10 @@ class PlannerApp extends StatelessWidget {
                 DayPlansBloc(eventRepository: context.read<EventRepository>()),
           ),
           BlocProvider(
-            create: (context) =>
-                ContactsBloc(userRepository: context.read<UserRepository>()),
+            create: (context) => ContactsBloc(
+              userRepository: context.read<UserRepository>(),
+              invitationRepository: context.read<InvitationRepository>(),
+            ),
           ),
         ],
         child: MaterialApp(

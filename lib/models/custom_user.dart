@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 class CustomUser extends Equatable {
-  final String? id;
+  final String id;
   final String username;
-  final String email;
+  final String? email;
   final String name;
   final String surname;
 
