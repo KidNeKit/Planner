@@ -1,26 +1,23 @@
 import 'package:equatable/equatable.dart';
 
-class CustomUser extends Equatable {
-  final String? id;
+class ContactUser extends Equatable {
+  final String id;
   final String username;
-  final String email;
   final String name;
   final String surname;
 
-  const CustomUser(
+  const ContactUser(
       {required this.id,
-      required this.email,
       required this.username,
       required this.name,
       required this.surname});
 
-  static CustomUser fromMap(Map<String, dynamic> map) {
-    return CustomUser(
+  static ContactUser fromMap(Map<String, dynamic> map) {
+    return ContactUser(
       id: map['id'],
-      email: map['email'],
       username: map['username'],
-      name: map['name'] ?? '',
-      surname: map['surname'] ?? '',
+      name: map['name'],
+      surname: map['surname'],
     );
   }
 
@@ -30,10 +27,9 @@ class CustomUser extends Equatable {
       'name': name,
       'surname': surname,
       'username': username,
-      'email': email,
     };
   }
 
   @override
-  List<Object?> get props => [id, username, email, name, surname];
+  List<Object?> get props => [id, username, name, surname];
 }

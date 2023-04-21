@@ -39,7 +39,7 @@ class ContactsScreen extends StatelessWidget {
                   const SizedBox(height: 10.0),
                   CustomSearch(onChangedFunc: (value) {}),
                   const SizedBox(height: 10.0),
-                  Text('Last Search',
+                  Text('Last Activity',
                       style: Theme.of(context).textTheme.labelLarge),
                 ],
               ),
@@ -61,11 +61,7 @@ class ContactsScreen extends StatelessWidget {
                   topRight: Radius.circular(20.0),
                 ),
               ),
-              child: Column(
-                children: const [
-                  InvitationsBlock(),
-                ],
-              ),
+              child: const InvitationsBlock(),
             ),
           ),
         ),

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/enum/operation_status.dart';
-import '../../models/enum/search_user.dart';
+import '../../models/search_user.dart';
 import '../../repositories/user_repository.dart';
 
 part 'searcher_event.dart';

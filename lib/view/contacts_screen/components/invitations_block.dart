@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:planner/resources/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../blocs/contacts/contacts_bloc.dart';
+import '../../../models/contact_user.dart';
+import '../../../resources/colors.dart';
 import '../../global_components/custom_text_sizes.dart';
 
 class InvitationsBlock extends StatelessWidget {
@@ -8,51 +11,64 @@ class InvitationsBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        CustomTitleSmallText(
-          text: 'Invitations',
-          color: Colors.black,
-        ),
-        SizedBox(height: 10.0),
-        FriendInviteItem(),
-        FriendInviteItem(),
-      ],
+    return BlocBuilder<ContactsBloc, ContactsState>(
+      builder: (context, state) {
+        return state.invitations.isEmpty
+            ? Container()
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CustomTitleSmallText(
+                    text: 'Invitations',
+                    color: Colors.black,
+                  ),
+                  const SizedBox(height: 10.0),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.all(0.0),
+                    itemBuilder: (context, index) =>
+                        FriendInviteItem(user: state.invitations[index]),
+                    itemCount: state.invitations.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 5.0),
+                  ),
+                ],
+              );
+      },
     );
   }
 }
 
 class FriendInviteItem extends StatelessWidget {
-  const FriendInviteItem({super.key});
+  final ContactUser user;
+
+  const FriendInviteItem({required this.user, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
+    return ListTile(
+      leading: Container(
+        height: 46.0,
+        width: 46.0,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+      title: CustomTitleSmallText(
+          text: '${user.name} ${user.surname}', color: Colors.black),
+      subtitle: CustomLabelLargeText(
+        text: '@${user.username}',
+        color: Colors.black.withOpacity(0.7),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            height: 50.0,
-            width: 50.0,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          ),
+          CancelButton(user: user),
           const SizedBox(width: 10.0),
-          const CustomLabelLargeText(
-            text: 'Name Surname',
-            color: Colors.black,
-          ),
-          const Spacer(),
-          Row(
-            children: const [
-              CancelButton(),
-              SizedBox(width: 10.0),
-              ConfirmButton(),
-            ],
-          ),
+          ConfirmButton(user: user),
         ],
       ),
     );
@@ -60,40 +76,50 @@ class FriendInviteItem extends StatelessWidget {
 }
 
 class CancelButton extends StatelessWidget {
-  const CancelButton({super.key});
+  final ContactUser user;
+
+  const CancelButton({required this.user, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        color: neonRed,
-        shape: BoxShape.circle,
-      ),
-      child: const Icon(
-        Icons.close,
-        color: Colors.white,
-        size: 30.0,
+    return GestureDetector(
+      onTap: () => context.read<ContactsBloc>().add(InvitationCanceled(user)),
+      child: Container(
+        padding: const EdgeInsets.all(5.0),
+        decoration: BoxDecoration(
+          color: neonRed,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.close,
+          color: Colors.white,
+          size: 30.0,
+        ),
       ),
     );
   }
 }
 
 class ConfirmButton extends StatelessWidget {
-  const ConfirmButton({super.key});
+  final ContactUser user;
+
+  const ConfirmButton({required this.user, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        color: neonGreen,
-        shape: BoxShape.circle,
-      ),
-      child: const Icon(
-        Icons.check,
-        color: Colors.white,
-        size: 30.0,
+    return GestureDetector(
+      onTap: () => context.read<ContactsBloc>().add(InvitationConfirmed(user)),
+      child: Container(
+        padding: const EdgeInsets.all(5.0),
+        decoration: BoxDecoration(
+          color: neonGreen,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.check,
+          color: Colors.white,
+          size: 30.0,
+        ),
       ),
     );
   }

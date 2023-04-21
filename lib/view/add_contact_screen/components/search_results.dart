@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/searcher/searcher_bloc.dart';
 import '../../../models/enum/operation_status.dart';
-import '../../../models/enum/search_user.dart';
+import '../../../models/search_user.dart';
 import '../../global_components/custom_text_sizes.dart';
 
 class SearchResults extends StatelessWidget {

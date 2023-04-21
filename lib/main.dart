@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'blocs/auth/auth_bloc.dart';
+import 'blocs/contacts/contacts_bloc.dart';
 import 'blocs/day_plans/day_plans_bloc.dart';
 import 'cubits/registration/registration_cubit.dart';
 import 'repositories/auth_repository.dart';
@@ -23,6 +24,7 @@ void main() async {
 class PlannerApp extends StatelessWidget {
   final AppRouter _appRouter = AppRouter();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   PlannerApp({super.key});
 
   @override
@@ -37,7 +39,10 @@ class PlannerApp extends StatelessWidget {
           create: (context) => EventRepository(firestore: _firestore),
         ),
         RepositoryProvider(
-          create: (context) => UserRepository(firestore: _firestore),
+          create: (context) => UserRepository(
+            firestore: _firestore,
+            firebaseAuth: _firebaseAuth,
+          ),
         ),
       ],
       child: MultiBlocProvider(
@@ -54,6 +59,10 @@ class PlannerApp extends StatelessWidget {
           BlocProvider(
             create: (context) =>
                 DayPlansBloc(eventRepository: context.read<EventRepository>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                ContactsBloc(userRepository: context.read<UserRepository>()),
           ),
         ],
         child: MaterialApp(
