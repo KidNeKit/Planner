@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../view/add_contact_screen/add_contact_screen.dart';
-import '../view/event_creation_screen/event_creation_screen.dart';
-import '../view/login_screen/login_screen.dart';
-import '../view/navigation_screen/navigation_screen.dart';
-import '../view/onboarding_screen/onboarding_screen.dart';
-import '../view/profile_screen/settings_screens/personal_data_screen/personal_data_screen.dart';
-import '../view/registration_screen/registration_screen.dart';
-import '../view/splash_screen/splash_screen.dart';
+import '../presentation/view/add_contact_screen/add_contact_screen.dart';
+import '../presentation/view/event_creation_screen/event_creation_screen.dart';
+import '../presentation/view/login_screen/login_screen.dart';
+import '../presentation/view/navigation_screen/navigation_screen.dart';
+import '../presentation/view/onboarding_screen/onboarding_screen.dart';
+import '../presentation/view/profile_screen/settings_screens/personal_data_screen/personal_data_screen.dart';
+import '../presentation/view/registration_screen/registration_screen.dart';
+import '../presentation/view/splash_screen/splash_screen.dart';
 
 class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {

@@ -3,18 +3,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:planner/repositories/invitation_repository.dart';
 
-import 'blocs/auth/auth_bloc.dart';
-import 'blocs/contacts/contacts_bloc.dart';
-import 'blocs/day_plans/day_plans_bloc.dart';
-import 'cubits/registration/registration_cubit.dart';
-import 'repositories/auth_repository.dart';
-import 'repositories/event_repository.dart';
-import 'repositories/user_repository.dart';
+import 'data/remote/datasources/firebase_auth_data_source.dart';
+import 'data/remote/datasources/firebase_event_data_source.dart';
+import 'data/remote/datasources/firebase_invitation_data_source.dart';
+import 'data/repositories/auth_repository.dart';
+import 'data/repositories/event_repository.dart';
+import 'data/repositories/invitation_repository.dart';
+import 'presentation/blocs/auth/auth_bloc.dart';
+import 'presentation/blocs/contacts/contacts_bloc.dart';
+import 'presentation/blocs/day_plans/day_plans_bloc.dart';
+import 'presentation/cubits/registration/registration_cubit.dart';
+import 'presentation/view/splash_screen/splash_screen.dart';
 import 'resources/themes.dart';
 import 'router/app_router.dart';
-import 'view/splash_screen/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,31 +35,35 @@ class PlannerApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-          create: (context) =>
-              AuthRepository(firebaseAuth: FirebaseAuth.instance),
+          create: (context) => EventRepository(
+            firebaseEventDataSource: FirebaseEventDataSource(
+              firebaseAuth: _firebaseAuth,
+              firestore: _firestore,
+            ),
+          ),
         ),
         RepositoryProvider(
-          create: (context) => EventRepository(firestore: _firestore),
-        ),
-        RepositoryProvider(
-          create: (context) => UserRepository(
-            firestore: _firestore,
-            firebaseAuth: _firebaseAuth,
+          create: (context) => AuthRepository(
+            firebaseAuthDataSource: FirebaseAuthDataSource(
+              firebaseAuth: _firebaseAuth,
+              firestore: _firestore,
+            ),
           ),
         ),
         RepositoryProvider(
           create: (context) => InvitationRepository(
-            firestore: _firestore,
-            firebaseAuth: _firebaseAuth,
+            firebaseInvitationDataSource: FirebaseInvitationDataSource(
+              firebaseAuth: _firebaseAuth,
+              firestore: _firestore,
+            ),
           ),
         ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => AuthBloc(
-                authRepository: context.read<AuthRepository>(),
-                userRepository: context.read<UserRepository>()),
+            create: (context) =>
+                AuthBloc(authRepository: context.read<AuthRepository>()),
           ),
           BlocProvider(
             create: (context) => RegistrationCubit(
@@ -69,7 +75,7 @@ class PlannerApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => ContactsBloc(
-              userRepository: context.read<UserRepository>(),
+              userRepository: context.read<AuthRepository>(),
               invitationRepository: context.read<InvitationRepository>(),
             ),
           ),
