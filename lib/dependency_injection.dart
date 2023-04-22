@@ -66,7 +66,9 @@ Future<void> initDI() async {
           firebaseAuth: locator.call(), firestore: locator.call()));
   locator.registerLazySingleton<BaseFirebaseInvitationDataSource>(() =>
       FirebaseInvitationDataSource(
-          firebaseAuth: locator.call(), firestore: locator.call()));
+          firebaseAuth: locator.call(),
+          firestore: locator.call(),
+          firebaseAuthDataSource: locator.call()));
 
   //other
   locator.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);

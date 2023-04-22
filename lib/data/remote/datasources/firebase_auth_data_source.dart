@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../domain/entities/user_entity.dart';
 import '../../../domain/entities/search_user.dart';
+import '../constants.dart' show FirebaseConstants;
 import 'base_firebase_auth_data_source.dart';
 
 class FirebaseAuthDataSource extends BaseFirebaseAuthDataSource {
@@ -25,8 +26,10 @@ class FirebaseAuthDataSource extends BaseFirebaseAuthDataSource {
     try {
       await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) =>
-              _firestore.collection('users').doc(value.user!.uid).set({
+          .then((value) => _firestore
+                  .collection(FirebaseConstants.users)
+                  .doc(value.user!.uid)
+                  .set({
                 'email': email,
                 'id': value.user!.uid,
                 'username': 'guest_${value.user!.uid}',
@@ -55,7 +58,7 @@ class FirebaseAuthDataSource extends BaseFirebaseAuthDataSource {
   @override
   Future<UserEntity> getUserById(String id) async {
     var query = await _firestore
-        .collection('users')
+        .collection(FirebaseConstants.users)
         .doc(_firebaseAuth.currentUser!.uid)
         .get();
     return UserEntity.fromMap(query.data()!);
@@ -67,7 +70,7 @@ class FirebaseAuthDataSource extends BaseFirebaseAuthDataSource {
       return [];
     }
     searchQuery = searchQuery.toLowerCase();
-    var query = await _firestore.collection('users').get();
+    var query = await _firestore.collection(FirebaseConstants.users).get();
     List<SearchUser> users = query.docs
         .map((e) => SearchUser.fromMap(e.id, e.data()))
         .where((element) =>
@@ -77,7 +80,7 @@ class FirebaseAuthDataSource extends BaseFirebaseAuthDataSource {
             element.id != _firebaseAuth.currentUser!.uid)
         .toList();
     var currentUser = await _firestore
-        .collection('users')
+        .collection(FirebaseConstants.users)
         .doc(_firebaseAuth.currentUser!.uid)
         .get();
     List invites = currentUser.data()!['invites'] ?? [];
@@ -93,7 +96,7 @@ class FirebaseAuthDataSource extends BaseFirebaseAuthDataSource {
   @override
   Future<void> updateUserProfile(Map<String, dynamic> map) async {
     await _firestore
-        .collection('users')
+        .collection(FirebaseConstants.users)
         .doc(_firebaseAuth.currentUser!.uid)
         .update(map);
   }
