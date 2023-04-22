@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repositories/auth_repository.dart';
+import '../../../dependency_injection.dart';
 import '../../../domain/entities/enum/operation_status.dart';
 import '../../cubits/onboarding/onboarding_cubit.dart';
 import '../navigation_screen/navigation_screen.dart';
@@ -31,9 +31,7 @@ class OnboardingScreen extends StatelessWidget {
   static MaterialPageRoute getRoute() {
     return MaterialPageRoute(
       builder: (context) => BlocProvider(
-        create: (context) => OnboardingCubit(
-          userRepository: context.read<AuthRepository>(),
-        ),
+        create: (context) => locator.get<OnboardingCubit>(),
         child: const OnboardingScreen(),
       ),
     );

@@ -1,15 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'data/remote/datasources/firebase_auth_data_source.dart';
-import 'data/remote/datasources/firebase_event_data_source.dart';
-import 'data/remote/datasources/firebase_invitation_data_source.dart';
-import 'data/repositories/auth_repository.dart';
-import 'data/repositories/event_repository.dart';
-import 'data/repositories/invitation_repository.dart';
+import 'dependency_injection.dart';
 import 'presentation/blocs/auth/auth_bloc.dart';
 import 'presentation/blocs/contacts/contacts_bloc.dart';
 import 'presentation/blocs/day_plans/day_plans_bloc.dart';
@@ -21,70 +14,34 @@ import 'router/app_router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(PlannerApp());
+  await initDI();
+  runApp(const PlannerApp());
 }
 
 class PlannerApp extends StatelessWidget {
-  final AppRouter _appRouter = AppRouter();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  PlannerApp({super.key});
+  const PlannerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    return MultiBlocProvider(
       providers: [
-        RepositoryProvider(
-          create: (context) => EventRepository(
-            firebaseEventDataSource: FirebaseEventDataSource(
-              firebaseAuth: _firebaseAuth,
-              firestore: _firestore,
-            ),
-          ),
+        BlocProvider(
+          create: (context) => locator.get<AuthBloc>(),
         ),
-        RepositoryProvider(
-          create: (context) => AuthRepository(
-            firebaseAuthDataSource: FirebaseAuthDataSource(
-              firebaseAuth: _firebaseAuth,
-              firestore: _firestore,
-            ),
-          ),
+        BlocProvider(
+          create: (context) => locator.get<RegistrationCubit>(),
         ),
-        RepositoryProvider(
-          create: (context) => InvitationRepository(
-            firebaseInvitationDataSource: FirebaseInvitationDataSource(
-              firebaseAuth: _firebaseAuth,
-              firestore: _firestore,
-            ),
-          ),
+        BlocProvider(
+          create: (context) => locator.get<DayPlansBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => locator.get<ContactsBloc>(),
         ),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) =>
-                AuthBloc(authRepository: context.read<AuthRepository>()),
-          ),
-          BlocProvider(
-            create: (context) => RegistrationCubit(
-                authRepository: context.read<AuthRepository>()),
-          ),
-          BlocProvider(
-            create: (context) =>
-                DayPlansBloc(eventRepository: context.read<EventRepository>()),
-          ),
-          BlocProvider(
-            create: (context) => ContactsBloc(
-              userRepository: context.read<AuthRepository>(),
-              invitationRepository: context.read<InvitationRepository>(),
-            ),
-          ),
-        ],
-        child: MaterialApp(
-          theme: baseTheme,
-          onGenerateRoute: _appRouter.onGenerateRoute,
-          initialRoute: SplashScreen.routeName,
-        ),
+      child: MaterialApp(
+        theme: baseTheme,
+        onGenerateRoute: locator.get<AppRouter>().onGenerateRoute,
+        initialRoute: SplashScreen.routeName,
       ),
     );
   }

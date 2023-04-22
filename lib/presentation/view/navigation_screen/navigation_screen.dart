@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../dependency_injection.dart';
 import '../../cubits/navigation/navigation_cubit.dart';
 import '../contacts_screen/contacts_screen.dart';
 import '../day_plans_screen/day_plans_screen.dart';
@@ -41,7 +42,7 @@ class NavigationScreen extends StatelessWidget {
   static MaterialPageRoute getRoute() {
     return MaterialPageRoute(
       builder: (context) => BlocProvider(
-          create: (context) => NavigationCubit(),
+          create: (context) => locator.get<NavigationCubit>(),
           child: const NavigationScreen()),
     );
   }

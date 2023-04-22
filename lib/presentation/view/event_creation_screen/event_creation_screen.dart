@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repositories/event_repository.dart';
+import '../../../dependency_injection.dart';
 import '../../cubits/event_creation/event_creation_cubit.dart';
 import 'components/event_creation_body.dart';
 import 'components/event_creation_header.dart';
@@ -26,8 +26,7 @@ class EventCreationScreen extends StatelessWidget {
   static MaterialPageRoute getRoute() {
     return MaterialPageRoute(
       builder: (context) => BlocProvider(
-        create: (context) => EventCreationCubit(
-            eventRepository: context.read<EventRepository>()),
+        create: (context) => locator.get<EventCreationCubit>(),
         child: const EventCreationScreen(),
       ),
     );

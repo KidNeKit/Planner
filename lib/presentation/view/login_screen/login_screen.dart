@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repositories/auth_repository.dart';
+import '../../../dependency_injection.dart';
 import '../../../domain/entities/enum/operation_status.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../cubits/login/login_cubit.dart';
@@ -148,8 +148,7 @@ class LoginScreen extends StatelessWidget {
   static MaterialPageRoute getRoute() {
     return MaterialPageRoute(
       builder: (context) => BlocProvider(
-        create: (context) =>
-            LoginCubit(authRepository: context.read<AuthRepository>()),
+        create: (context) => locator.get<LoginCubit>(),
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.user != null) {
