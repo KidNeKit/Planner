@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -83,5 +85,16 @@ class FirebaseContactsDataSource extends BaseFirebaseContactsDataSource {
         .collection(FirebaseConstants.contacts)
         .doc(_firebaseAuth.currentUser!.uid)
         .set(customUser.toMap());
+  }
+
+  @override
+  Map<String, List<UserEntity>> getSplitedUsers(List<UserEntity> users) {
+    Map<String, List<UserEntity>> usersMap = {};
+    for (var user in users) {
+      usersMap.update(
+          user.surname[0].toUpperCase(), (addedUsers) => addedUsers..add(user),
+          ifAbsent: () => [user]);
+    }
+    return usersMap;
   }
 }

@@ -50,7 +50,8 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
   }
 
   void _onContactsFetched(ContactsFetched event, Emitter<ContactsState> emit) {
-    emit(state.copyWith(contacts: event.users));
+    emit(state.copyWith(
+        contacts: _contactsRepository.getSplitedUsers(event.users)));
   }
 
   void _onInvitationConfirmed(

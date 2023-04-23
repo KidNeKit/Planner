@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planner/domain/entities/user_entity.dart';
+import 'package:planner/resources/colors.dart';
 
 import '../../../blocs/contacts/contacts_bloc.dart';
 import '../../global_components/custom_text_sizes.dart';
@@ -14,6 +15,7 @@ class ContactsBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ContactsBloc, ContactsState>(
       builder: (context, state) {
+        log(state.contacts.toString());
         return state.contacts.isEmpty
             ? Container()
             : Column(
@@ -29,19 +31,22 @@ class ContactsBlock extends StatelessWidget {
                         children: const [
                           Icon(Icons.arrow_downward),
                           CustomLabelLargeText(
-                            text: 'Name',
+                            text: 'Surname',
                             color: Colors.black,
                           ),
                         ],
                       ),
                     ),
                   ),
+                  const SizedBox(height: 5.0),
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     padding: const EdgeInsets.all(0.0),
-                    itemBuilder: (ctx, index) =>
-                        ContactItem(user: state.contacts[index]),
+                    itemBuilder: (ctx, index) => LetterGroupItem(
+                      letter: state.contacts.entries.elementAt(index).key,
+                      users: state.contacts.entries.elementAt(index).value,
+                    ),
                     separatorBuilder: (ctx, index) =>
                         const SizedBox(height: 5.0),
                     itemCount: state.contacts.length,
@@ -49,6 +54,55 @@ class ContactsBlock extends StatelessWidget {
                 ],
               );
       },
+    );
+  }
+}
+
+class LetterGroupItem extends StatelessWidget {
+  final String letter;
+  final List<UserEntity> users;
+
+  const LetterGroupItem({required this.letter, required this.users, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 20,
+              margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Divider(
+                color: Theme.of(context).primaryColor,
+                thickness: 1,
+              ),
+            ),
+            CustomLabelLargeText(
+              text: letter,
+              color: Theme.of(context).primaryColor,
+            ),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                child: Divider(
+                  color: Theme.of(context).primaryColor,
+                  thickness: 1,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 5.0),
+        ...List.generate(
+          users.length,
+          (index) => ContactItem(
+            user: users[index],
+          ),
+        ),
+      ],
     );
   }
 }

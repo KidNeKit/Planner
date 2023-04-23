@@ -1,7 +1,7 @@
 part of 'contacts_bloc.dart';
 
 class ContactsState extends Equatable {
-  final List<UserEntity> contacts;
+  final Map<String, List<UserEntity>> contacts;
   final List<UserEntity> invitations;
 
   const ContactsState({
@@ -10,11 +10,11 @@ class ContactsState extends Equatable {
   });
 
   ContactsState.initial()
-      : contacts = [],
+      : contacts = {},
         invitations = [];
 
   ContactsState copyWith({
-    List<UserEntity>? contacts,
+    Map<String, List<UserEntity>>? contacts,
     List<UserEntity>? invitations,
   }) {
     return ContactsState(

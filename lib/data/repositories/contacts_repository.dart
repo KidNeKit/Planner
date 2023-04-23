@@ -28,4 +28,9 @@ class ContactsRepository extends BaseContactsRepository {
   @override
   Future<void> confirmUserInvitation(UserEntity user) async =>
       await _firebaseContactsDataSource.confirmUserInvitation(user);
+
+  @override
+  Map<String, List<UserEntity>> getSplitedUsers(List<UserEntity> users) {
+    return _firebaseContactsDataSource.getSplitedUsers(users);
+  }
 }
