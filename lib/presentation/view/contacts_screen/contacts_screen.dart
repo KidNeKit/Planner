@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planner/presentation/view/contacts_screen/components/contacts_block.dart';
 
 import '../add_contact_screen/add_contact_screen.dart';
 import '../global_components/custom_search.dart';
@@ -61,7 +62,15 @@ class ContactsScreen extends StatelessWidget {
                   topRight: Radius.circular(20.0),
                 ),
               ),
-              child: const InvitationsBlock(),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: const [
+                    InvitationsBlock(),
+                    ContactsBlock(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

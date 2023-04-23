@@ -4,9 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../constants.dart' show FirebaseConstants;
 import 'base_firebase_auth_data_source.dart';
-import 'base_firebase_invitation_data_source.dart';
+import 'base_firebase_contacts_data_source.dart';
 
-class FirebaseInvitationDataSource extends BaseFirebaseInvitationDataSource {
+class FirebaseContactsDataSource extends BaseFirebaseContactsDataSource {
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
   final BaseFirebaseAuthDataSource _firebaseAuthDataSource;
@@ -14,7 +14,7 @@ class FirebaseInvitationDataSource extends BaseFirebaseInvitationDataSource {
   late final CollectionReference _usersReference =
       _firestore.collection(FirebaseConstants.users);
 
-  FirebaseInvitationDataSource({
+  FirebaseContactsDataSource({
     required FirebaseAuth firebaseAuth,
     required FirebaseFirestore firestore,
     required BaseFirebaseAuthDataSource firebaseAuthDataSource,
@@ -23,9 +23,17 @@ class FirebaseInvitationDataSource extends BaseFirebaseInvitationDataSource {
         _firebaseAuthDataSource = firebaseAuthDataSource;
 
   @override
-  Stream<List<UserEntity>> get getInvitationsStream => _usersReference
+  Stream<List<UserEntity>> get invitationsStream => _usersReference
       .doc(_firebaseAuth.currentUser!.uid)
       .collection(FirebaseConstants.invitations)
+      .snapshots()
+      .map((snap) =>
+          snap.docs.map((e) => UserEntity.fromMap(e.data())).toList());
+
+  @override
+  Stream<List<UserEntity>> get contactsStream => _usersReference
+      .doc(_firebaseAuth.currentUser!.uid)
+      .collection(FirebaseConstants.contacts)
       .snapshots()
       .map((snap) =>
           snap.docs.map((e) => UserEntity.fromMap(e.data())).toList());

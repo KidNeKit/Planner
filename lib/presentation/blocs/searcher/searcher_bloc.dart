@@ -4,20 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/entities/enum/operation_status.dart';
 import '../../../domain/entities/search_user.dart';
 import '../../../domain/repositories/base_auth_repository.dart';
-import '../../../domain/repositories/base_invitation_repository.dart';
+import '../../../domain/repositories/base_contacts_repository.dart';
 
 part 'searcher_event.dart';
 part 'searcher_state.dart';
 
 class SearcherBloc extends Bloc<SearcherEvent, SearcherState> {
   final BaseAuthRepository _userRepository;
-  final BaseInvitationRepository _invitationRepository;
+  final BaseContactsRepository _contactsRepository;
 
   SearcherBloc({
     required BaseAuthRepository userRepository,
-    required BaseInvitationRepository invitationRepository,
+    required BaseContactsRepository invitationRepository,
   })  : _userRepository = userRepository,
-        _invitationRepository = invitationRepository,
+        _contactsRepository = invitationRepository,
         super(SearcherState.initial()) {
     on<SearchByNameRequested>(_onSearchByName);
     on<InviteRequested>(_onInviteRequested);
@@ -37,7 +37,7 @@ class SearcherBloc extends Bloc<SearcherEvent, SearcherState> {
     int index = users.indexWhere((element) => element.id == event.userId);
     users[index] = users[index].copyWith(isLoading: true);
     emit(state.copyWith(users: users));
-    await _invitationRepository.inviteUser(event.userId);
+    await _contactsRepository.inviteUser(event.userId);
     var updatedUsers = [...users];
     updatedUsers[index] =
         updatedUsers[index].copyWith(isInvited: true, isLoading: false);

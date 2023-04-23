@@ -16,6 +16,15 @@ class InvitationsFetched extends ContactsEvent {
   List<Object> get props => [users];
 }
 
+class ContactsFetched extends ContactsEvent {
+  final List<UserEntity> users;
+
+  const ContactsFetched(this.users);
+
+  @override
+  List<Object> get props => [users];
+}
+
 class InvitationReceived extends ContactsEvent {
   final UserEntity user;
 

@@ -19,8 +19,8 @@ class UserEntity extends Equatable {
       id: map['id'],
       email: map['email'],
       username: map['username'],
-      name: map['name'],
-      surname: map['surname'],
+      name: map['name'] ?? 'Name',
+      surname: map['surname'] ?? 'Surname',
     );
   }
 

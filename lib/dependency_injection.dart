@@ -4,16 +4,16 @@ import 'package:get_it/get_it.dart';
 
 import 'data/remote/datasources/base_firebase_auth_data_source.dart';
 import 'data/remote/datasources/base_firebase_event_data_source.dart';
-import 'data/remote/datasources/base_firebase_invitation_data_source.dart';
+import 'data/remote/datasources/base_firebase_contacts_data_source.dart';
 import 'data/remote/datasources/firebase_auth_data_source.dart';
 import 'data/remote/datasources/firebase_event_data_source.dart';
-import 'data/remote/datasources/firebase_invitation_data_source.dart';
+import 'data/remote/datasources/firebase_contacts_data_source.dart';
 import 'data/repositories/auth_repository.dart';
 import 'data/repositories/event_repository.dart';
-import 'data/repositories/invitation_repository.dart';
+import 'data/repositories/contacts_repository.dart';
 import 'domain/repositories/base_auth_repository.dart';
 import 'domain/repositories/base_event_repository.dart';
-import 'domain/repositories/base_invitation_repository.dart';
+import 'domain/repositories/base_contacts_repository.dart';
 import 'presentation/blocs/auth/auth_bloc.dart';
 import 'presentation/blocs/contacts/contacts_bloc.dart';
 import 'presentation/blocs/day_plans/day_plans_bloc.dart';
@@ -54,8 +54,8 @@ Future<void> initDI() async {
       () => EventRepository(firebaseEventDataSource: locator.call()));
   locator.registerLazySingleton<BaseAuthRepository>(
       () => AuthRepository(firebaseAuthDataSource: locator.call()));
-  locator.registerLazySingleton<BaseInvitationRepository>(
-      () => InvitationRepository(firebaseInvitationDataSource: locator.call()));
+  locator.registerLazySingleton<BaseContactsRepository>(
+      () => ContactsRepository(firebaseInvitationDataSource: locator.call()));
 
   //datasource
   locator.registerLazySingleton<BaseFirebaseEventDataSource>(() =>
@@ -64,8 +64,8 @@ Future<void> initDI() async {
   locator.registerLazySingleton<BaseFirebaseAuthDataSource>(() =>
       FirebaseAuthDataSource(
           firebaseAuth: locator.call(), firestore: locator.call()));
-  locator.registerLazySingleton<BaseFirebaseInvitationDataSource>(() =>
-      FirebaseInvitationDataSource(
+  locator.registerLazySingleton<BaseFirebaseContactsDataSource>(() =>
+      FirebaseContactsDataSource(
           firebaseAuth: locator.call(),
           firestore: locator.call(),
           firebaseAuthDataSource: locator.call()));
