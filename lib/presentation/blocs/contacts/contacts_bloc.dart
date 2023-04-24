@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planner/data/remote/models/chat_model.dart';
+import 'package:planner/domain/entities/contact_entity.dart';
 
 import '../../../domain/entities/user_entity.dart';
 import '../../../domain/repositories/base_auth_repository.dart';

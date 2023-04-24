@@ -35,5 +35,10 @@ class UserEntity extends Equatable {
   }
 
   @override
+  String toString() {
+    return toMap().toString();
+  }
+
+  @override
   List<Object?> get props => [id, username, email, name, surname];
 }

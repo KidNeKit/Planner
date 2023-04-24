@@ -1,6 +1,7 @@
+import '../../domain/entities/contact_entity.dart';
 import '../../domain/entities/user_entity.dart';
-import '../remote/datasources/base_firebase_contacts_data_source.dart';
 import '../../domain/repositories/base_contacts_repository.dart';
+import '../remote/datasources/base_firebase_contacts_data_source.dart';
 
 class ContactsRepository extends BaseContactsRepository {
   final BaseFirebaseContactsDataSource _firebaseContactsDataSource;
@@ -14,7 +15,7 @@ class ContactsRepository extends BaseContactsRepository {
       _firebaseContactsDataSource.invitationsStream;
 
   @override
-  Stream<List<UserEntity>> get contactsStream =>
+  Stream<List<ContactEntity>> get contactsStream =>
       _firebaseContactsDataSource.contactsStream;
 
   @override
@@ -30,7 +31,7 @@ class ContactsRepository extends BaseContactsRepository {
       await _firebaseContactsDataSource.confirmUserInvitation(user);
 
   @override
-  Map<String, List<UserEntity>> getSplitedUsers(List<UserEntity> users) {
+  Map<String, List<ContactEntity>> getSplitedUsers(List<ContactEntity> users) {
     return _firebaseContactsDataSource.getSplitedUsers(users);
   }
 }

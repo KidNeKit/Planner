@@ -23,6 +23,10 @@ class FirebaseChatDataSource extends BaseFirebaseChatDataBase {
   Future<String> createChat(ChatEntity chat) async {
     var createdChat =
         await _firestore.collection(FirebaseConstants.chats).add(chat.toMap());
+    _firestore
+        .collection(FirebaseConstants.chats)
+        .doc(createdChat.id)
+        .update({'chatId': createdChat.id});
     return createdChat.id;
   }
 

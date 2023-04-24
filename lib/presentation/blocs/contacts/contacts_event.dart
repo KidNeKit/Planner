@@ -17,7 +17,7 @@ class InvitationsFetched extends ContactsEvent {
 }
 
 class ContactsFetched extends ContactsEvent {
-  final List<UserEntity> users;
+  final List<ContactEntity> users;
 
   const ContactsFetched(this.users);
 

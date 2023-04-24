@@ -74,7 +74,8 @@ Future<void> initDI() async {
       FirebaseContactsDataSource(
           firebaseAuth: locator.call(),
           firestore: locator.call(),
-          firebaseAuthDataSource: locator.call()));
+          firebaseAuthDataSource: locator.call(),
+          firebaseChatDataBase: locator.call()));
   locator.registerLazySingleton<BaseFirebaseChatDataBase>(() =>
       FirebaseChatDataSource(
           firebaseAuth: locator.call(),
