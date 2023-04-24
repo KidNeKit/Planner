@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:planner/data/remote/models/chat_model.dart';
 
 import '../../../domain/entities/user_entity.dart';
 import '../../../domain/repositories/base_auth_repository.dart';
@@ -34,15 +35,11 @@ class ContactsBloc extends Bloc<ContactsEvent, ContactsState> {
       add(ContactsFetched(contacts));
     });
 
-    on<InvitationReceived>(_onInvitationUpdated);
     on<InvitationsFetched>(_onInvitationsFetched);
     on<InvitationConfirmed>(_onInvitationConfirmed);
     on<InvitationCanceled>(_onInvitationCanceled);
     on<ContactsFetched>(_onContactsFetched);
   }
-
-  void _onInvitationUpdated(
-      InvitationReceived event, Emitter<ContactsState> emit) {}
 
   void _onInvitationsFetched(
       InvitationsFetched event, Emitter<ContactsState> emit) {

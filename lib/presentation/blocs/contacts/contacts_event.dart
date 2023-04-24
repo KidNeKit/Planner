@@ -25,15 +25,6 @@ class ContactsFetched extends ContactsEvent {
   List<Object> get props => [users];
 }
 
-class InvitationReceived extends ContactsEvent {
-  final UserEntity user;
-
-  const InvitationReceived(this.user);
-
-  @override
-  List<Object> get props => [user];
-}
-
 class InvitationConfirmed extends ContactsEvent {
   final UserEntity user;
 

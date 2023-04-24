@@ -131,6 +131,10 @@ class ContactItem extends StatelessWidget {
         text: '@${user.username}',
         color: Colors.black.withOpacity(0.7),
       ),
+      trailing: GestureDetector(
+        onTap: () => log('Messaging user: ${user.id}'),
+        child: const Icon(Icons.message),
+      ),
     );
   }
 }
