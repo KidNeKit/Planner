@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:planner/domain/entities/user_entity.dart';
 import 'package:planner/resources/colors.dart';
 
+import '../../../../domain/entities/contact_entity.dart';
 import '../../../blocs/contacts/contacts_bloc.dart';
 import '../../global_components/custom_text_sizes.dart';
 
@@ -60,7 +61,7 @@ class ContactsBlock extends StatelessWidget {
 
 class LetterGroupItem extends StatelessWidget {
   final String letter;
-  final List<UserEntity> users;
+  final List<ContactEntity> users;
 
   const LetterGroupItem({required this.letter, required this.users, super.key});
 
@@ -108,7 +109,7 @@ class LetterGroupItem extends StatelessWidget {
 }
 
 class ContactItem extends StatelessWidget {
-  final UserEntity user;
+  final ContactEntity user;
 
   const ContactItem({required this.user, super.key});
 
@@ -132,7 +133,7 @@ class ContactItem extends StatelessWidget {
         color: Colors.black.withOpacity(0.7),
       ),
       trailing: GestureDetector(
-        onTap: () => log('Messaging user: ${user.id}'),
+        onTap: () => log('Opening chat: ${user.chatId}'),
         child: const Icon(Icons.message),
       ),
     );

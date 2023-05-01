@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
+import '../../../resources/colors.dart';
 import '../../cubits/navigation/navigation_cubit.dart';
 import '../contacts_screen/contacts_screen.dart';
 import '../day_plans_screen/day_plans_screen.dart';
@@ -18,6 +19,12 @@ class NavigationScreen extends StatelessWidget {
     ContactsScreen(),
     ProfileScreen(),
   ];
+  static List<Widget> icons = const [
+    Icon(Icons.home, color: Colors.white),
+    Icon(Icons.list, color: Colors.white),
+    Icon(Icons.contact_phone, color: Colors.white),
+    Icon(Icons.manage_accounts, color: Colors.white),
+  ];
 
   const NavigationScreen({super.key});
 
@@ -32,8 +39,14 @@ class NavigationScreen extends StatelessWidget {
           ),
           bottomNavigationBar: const BottomBar(),
           floatingActionButton: FloatingActionButton(
-              onPressed: () => Navigator.of(context)
-                  .pushNamed(EventCreationScreen.routeName)),
+            backgroundColor: neonGreen,
+            foregroundColor: primaryColor,
+            onPressed: () =>
+                Navigator.of(context).pushNamed(EventCreationScreen.routeName),
+            child: const Icon(Icons.add),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
         );
       },
     );
