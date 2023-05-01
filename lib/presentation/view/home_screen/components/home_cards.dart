@@ -5,48 +5,71 @@ class HomeCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const [
-            HomeCard(),
-            HomeCard(),
+    return LayoutBuilder(
+      builder: (ctx, constraints) {
+        var cardSide = 0.47 * constraints.maxWidth;
+        var spacerWidth = constraints.maxWidth - 2 * cardSide;
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: constraints.maxWidth,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CardItem(cardSide: cardSide),
+                  CardItem(cardSide: cardSide),
+                ],
+              ),
+            ),
+            SizedBox(height: spacerWidth),
+            SizedBox(
+              width: constraints.maxWidth,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CardItem(cardSide: cardSide),
+                  CardItem(cardSide: cardSide),
+                ],
+              ),
+            ),
           ],
-        ),
-        const SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const [
-            HomeCard(),
-            HomeCard(),
-          ],
-        )
-      ],
+        );
+      },
     );
   }
 }
 
-class HomeCard extends StatelessWidget {
-  const HomeCard({super.key});
+class CardItem extends StatelessWidget {
+  final double cardSide;
+  final Function()? onPressedFunc;
+
+  const CardItem({required this.cardSide, this.onPressedFunc, super.key});
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      height: 0.43 * size.width,
-      width: 0.43 * size.width,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 10.0,
-            spreadRadius: 2,
-          ),
-        ],
-        borderRadius: BorderRadius.circular(20.0),
+    return GestureDetector(
+      onTap: onPressedFunc,
+      child: Container(
+        height: cardSide,
+        width: cardSide,
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25.0),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF4E568C).withOpacity(0.08),
+              blurRadius: 20.0,
+              offset: const Offset(0, 20.0),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: const [],
+        ),
       ),
     );
   }

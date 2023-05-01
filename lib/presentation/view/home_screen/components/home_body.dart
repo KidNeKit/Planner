@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../domain/entities/enum/days_of_week.dart';
+import '../../../../domain/entities/enum/months_info.dart';
 import '../../../../domain/entities/user_entity.dart';
 import '../../../../resources/colors.dart';
 import '../../../blocs/auth/auth_bloc.dart';
+import 'home_cards.dart';
 import 'today_achievements.dart';
 
-class HomeBody extends StatelessWidget {
+class HomeBody extends StatefulWidget {
   const HomeBody({super.key});
+
+  @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
+  late DateTime today;
+
+  @override
+  void initState() {
+    today = DateTime.now();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +42,7 @@ class HomeBody extends StatelessWidget {
             },
           ),
           Text(
-            'Thursday, 30 Mar 2023',
+            '${DaysOfWeek.getDayOfWeekByOrder(today.weekday).fullName}, ${today.day} ${MonthsInfo.getMonthByOrder(today.month).fullName} ${today.year}',
             style: Theme.of(context)
                 .textTheme
                 .labelLarge!
@@ -35,7 +51,7 @@ class HomeBody extends StatelessWidget {
           const SizedBox(height: 30.0),
           const TodayAchievements(),
           const SizedBox(height: 50.0),
-          //const HomeCards(),
+          const HomeCards(),
         ],
       ),
     );
